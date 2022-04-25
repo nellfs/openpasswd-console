@@ -1,6 +1,6 @@
 import React from 'react';
 
-class App extends React.Component {
+class Login extends React.Component {
   render() {
     return (
       <main className="flex-grow flex justify-center">
@@ -80,4 +80,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Login;

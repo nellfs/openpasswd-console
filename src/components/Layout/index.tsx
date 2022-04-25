@@ -1,9 +1,12 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Home from './Home';
 import { Link } from 'react-router-dom';
 
-class Portal extends React.Component {
+interface ILayoutProps {
+  children: JSX.Element
+}
+
+class Layout extends React.Component<ILayoutProps> {
   render() {
     return (
       <div className="flex flex-col h-screen">
@@ -13,18 +16,11 @@ class Portal extends React.Component {
               <Link className="text-2xl font-bold text-white" to="/">
                 OpenPasswd
               </Link>
-              <div className="text-mg font-bold text-white">
-                <Link to="/console">Sign In</Link>
-                <span className="px-2">/</span>
-                <Link to="/">Sign Up</Link>
-              </div>
             </div>
           </div>
         </nav>
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
+        {this.props.children}
 
         <footer className="min-w-full text-center lg:text-left bg-gray-100 text-gray-600">
           <div className="text-center p-6 bg-gray-200">
@@ -42,4 +38,4 @@ class Portal extends React.Component {
   }
 }
 
-export default Portal;
+export default Layout;
