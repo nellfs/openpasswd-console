@@ -11,7 +11,7 @@ class App extends React.Component {
                 src="login.jpg"
                 alt="Phone image"
               />
-              <span className="block md:-mt-24">
+              <span className="block -mt-24 md:mt-0">
                 <a
                   className="text-sm text-gray-4000 bg-white "
                   href="https://www.freepik.com/vectors/citizen"
