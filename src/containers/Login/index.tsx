@@ -7,16 +7,15 @@ class Login extends React.Component {
         <div className="container px-6 py-12 h-full">
           <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
             <div className="mb-10 lg:mb-0 w-2/3 md:w-6/12 text-center">
-              <img
-                src="login.jpg"
-                alt="Phone image"
-              />
+              <img src="login.jpg" alt="Phone image" />
               <span className="block -mt-24 md:mt-0">
                 <a
                   className="text-sm text-gray-4000 bg-white "
                   href="https://www.freepik.com/vectors/citizen"
-                  target='_blank'
-                >Citizen vector created by storyset - www.freepik.com</a>
+                  target="_blank"
+                >
+                  Citizen vector created by storyset - www.freepik.com
+                </a>
               </span>
             </div>
             <div className="md:w-5/12 lg:ml-20">

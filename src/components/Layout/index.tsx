@@ -1,21 +1,66 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import classNames from 'classnames';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import { Menu } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/solid';
+import Transition from '../Transition';
 
 interface ILayoutProps {
-  children: JSX.Element
+  children: JSX.Element;
 }
 
-class Layout extends React.Component<ILayoutProps> {
+interface ILayoutState {
+  CategoryVisible: boolean;
+}
+
+class Layout extends React.Component<ILayoutProps, ILayoutState> {
+  state: ILayoutState = { CategoryVisible: true };
+
   render() {
     return (
       <div className="flex flex-col h-screen">
         <nav className="bg-gray-800">
           <div className="px-6 md:px-4 lg:px-8">
             <div className="flex items-center justify-between h-16">
-              <Link className="text-2xl font-bold text-white" to="/">
-                OpenPasswd
-              </Link>
+              <div className="flex items-center gap-10">
+                <Link className="text-2xl font-bold text-white" to="/">
+                  OpenPasswd
+                </Link>
+
+                <Menu as="div" className="relative inline-block text-left">
+                  <div>
+                    <Menu.Button className="inline-flex justify-center w-fullpx-4 py-2 text-white text-sm font-medium">
+                      Categories
+                      <ChevronDownIcon
+                        className="-mr-1 ml-2 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                    </Menu.Button>
+                  </div>
+
+                  <Transition>
+                    <Menu.Items className="origin-top-left absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <a
+                              href="#"
+                              className={classNames(
+                                active
+                                  ? 'bg-gray-100 text-gray-900'
+                                  : 'text-gray-700',
+                                'block px-4 py-2 text-sm'
+                              )}
+                            >
+                              Default
+                            </a>
+                          )}
+                        </Menu.Item>
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              </div>
             </div>
           </div>
         </nav>
