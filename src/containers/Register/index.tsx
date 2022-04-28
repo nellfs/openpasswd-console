@@ -4,9 +4,9 @@ import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 
 interface IState {
+  name: string;
   email: string;
   password: string;
-  remember: boolean;
 }
 
 interface LocationProps {
@@ -15,30 +15,27 @@ interface LocationProps {
   };
 }
 
-const Login = () => {
+const Register = () => {
   const navigate = useNavigate();
-  const location = useLocation() as LocationProps;
-
-  let from = location.state?.from?.pathname || '/';
 
   const [state, setState] = useState<IState>({
+    name: '',
     email: '',
     password: '',
-    remember: false,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [token, setToken] = useRecoilState(auth_token);
 
-  const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onChanceName = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setState({ ...state, name: event.target.value });
+  const onChanceEmail = (event: React.ChangeEvent<HTMLInputElement>) =>
     setState({ ...state, email: event.target.value });
-  const onChangePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
+  const onChancePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
     setState({ ...state, password: event.target.value });
-  const onChangeRemember = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setState({ ...state, remember: event.target.checked });
 
   const authTokenRequest = async () => {
     setIsLoading(true);
-    const url = '//localhost:7777/api/auth/token';
+    const url = '//localhost:7777/api/auth/user';
     const options = {
       method: 'POST',
       headers: {
@@ -58,16 +55,31 @@ const Login = () => {
       setIsLoading(false);
     }
 
-    //   setToken(Date().toString());
-    //   navigate(from, { replace: true });
+    // navigate('/', { replace: true });
   };
 
   return (
     <main className="flex-grow flex justify-center">
       <div className="py-12 px-5 container md:w-1/2">
-        <h2 className="text-2xl font-bold">Login</h2>
+        <h2 className="text-2xl font-bold">Register</h2>
         <div className="mt-8">
           <div className="grid grid-cols-1 gap-6">
+            <label className="block">
+              <span className="text-gray-700">Full name</span>
+              <input
+                type="text"
+                className="
+                    mt-1
+                    block
+                    w-full
+                    rounded-md
+                    border-gray-300
+                    shadow-sm
+                    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
+                  "
+                placeholder=""
+              />
+            </label>
             <label className="block">
               <span className="text-gray-700">Email</span>
               <input
@@ -82,8 +94,6 @@ const Login = () => {
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
                 placeholder="john@example.com"
-                value={state.email}
-                onChange={onChangeEmail}
               />
             </label>
             <label className="block">
@@ -100,26 +110,29 @@ const Login = () => {
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
                 placeholder="********"
-                value={state.password}
-                onChange={onChangePassword}
+              />
+            </label>
+            <label className="block">
+              <span className="text-gray-700">Password Confirmation</span>
+              <input
+                type="password"
+                className="
+                    mt-1
+                    block
+                    w-full
+                    rounded-md
+                    border-gray-300
+                    shadow-sm
+                    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
+                  "
+                placeholder="********"
               />
             </label>
             <div className="block">
               <div className="mt-2">
                 <div className="flex justify-between">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={state.remember}
-                      onChange={onChangeRemember}
-                    />
-                    <span className="ml-2">Remember-me</span>
-                  </label>
-                  <Link
-                    className="text-blue-600 hover:underline"
-                    to="/register"
-                  >
-                    Register new account
+                  <Link className="text-blue-600 hover:underline" to="/login">
+                    Already have an account
                   </Link>
                 </div>
               </div>
@@ -147,7 +160,7 @@ const Login = () => {
               disabled={isLoading}
               onClick={authTokenRequest}
             >
-              Login
+              Register
             </button>
           </div>
         </div>
@@ -156,4 +169,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
