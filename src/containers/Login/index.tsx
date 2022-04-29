@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
+import { authToken } from '../../services';
+import { ResponseError, ResponseToken } from '../../services/models';
 
 interface IState {
   email: string;
@@ -15,6 +17,20 @@ interface LocationProps {
   };
 }
 
+type ErrorProps = {
+  field: string;
+  value: string;
+};
+
+const ErrorMessage = (props: ErrorProps) => (
+  <div
+    className="bg-red-100 border border-red-400 text-red-700 px-4 rounded relative"
+    role="alert"
+  >
+    <span className="block sm:inline">{props.value}</span>
+  </div>
+);
+
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
@@ -27,7 +43,8 @@ const Login = () => {
     remember: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [token, setToken] = useRecoilState(auth_token);
+  const [errors, setErrors] = useState<ResponseError>();
+  const [_, setToken] = useRecoilState(auth_token);
 
   const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) =>
     setState({ ...state, email: event.target.value });
@@ -38,29 +55,23 @@ const Login = () => {
 
   const authTokenRequest = async () => {
     setIsLoading(true);
-    const url = '//localhost:7777/api/auth/token';
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(state),
-    };
-
-    try {
-      let response = await fetch(url, options);
-      let data = await response.json();
-      console.log(data);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
+    let login = await authToken(state);
+    if ('access_token' in login) {
+      setToken((login as ResponseToken).access_token);
+      navigate('/', { replace: true });
+    } else {
+      setErrors(login as ResponseError);
     }
-
-    //   setToken(Date().toString());
-    //   navigate(from, { replace: true });
+    setIsLoading(false);
   };
+
+  let errorMessages;
+  if (errors) {
+    errorMessages = Object.keys(errors?.error).map((k) => {
+      let v = errors?.error[k];
+      return <ErrorMessage key={k} field={k} value={v} />;
+    });
+  }
 
   return (
     <main className="flex-grow flex justify-center">
@@ -68,6 +79,7 @@ const Login = () => {
         <h2 className="text-2xl font-bold">Login</h2>
         <div className="mt-8">
           <div className="grid grid-cols-1 gap-6">
+            {errorMessages}
             <label className="block">
               <span className="text-gray-700">Email</span>
               <input

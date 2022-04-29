@@ -2,18 +2,29 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
+import { authRegister, authToken } from '../../services';
+import { ResponseError, ResponseToken } from '../../services/models';
 
 interface IState {
   name: string;
   email: string;
   password: string;
+  passwordConfirmation: string;
 }
 
-interface LocationProps {
-  state: {
-    from: Location;
-  };
-}
+type ErrorProps = {
+  field: string;
+  value: string;
+};
+
+const ErrorMessage = (props: ErrorProps) => (
+  <div
+    className="bg-red-100 border border-red-400 text-red-700 px-4 rounded relative"
+    role="alert"
+  >
+    <span className="block sm:inline">{props.value}</span>
+  </div>
+);
 
 const Register = () => {
   const navigate = useNavigate();
@@ -22,8 +33,10 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
+    passwordConfirmation: '',
   });
-
+  const [_, setToken] = useRecoilState(auth_token);
+  const [errors, setErrors] = useState<ResponseError>();
   const [isLoading, setIsLoading] = useState(false);
 
   const onChanceName = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -32,38 +45,44 @@ const Register = () => {
     setState({ ...state, email: event.target.value });
   const onChancePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
     setState({ ...state, password: event.target.value });
+  const onChancePasswordConfirmation = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => setState({ ...state, passwordConfirmation: event.target.value });
 
-  const authTokenRequest = async () => {
+  const authRegisterRequest = async () => {
     setIsLoading(true);
-    const url = '//localhost:7777/api/auth/user';
-    const options = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(state),
-    };
 
-    try {
-      let response = await fetch(url, options);
-      let data = await response.json();
-      console.log(data);
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setIsLoading(false);
+    const result = await authRegister(state);
+    if (typeof result === 'number') {
+      // login
+      setErrors(undefined);
+      let login = await authToken(state);
+      if ('access_token' in login) {
+        setToken((login as ResponseToken).access_token);
+        navigate('/', { replace: true });
+      } else {
+        setErrors(login as ResponseError);
+      }
+    } else {
+      setErrors(result as ResponseError);
     }
-
-    // navigate('/', { replace: true });
+    setIsLoading(false);
   };
 
+  let errorMessages;
+  if (errors) {
+    errorMessages = Object.keys(errors?.error).map((k) => {
+      let v = errors?.error[k];
+      return <ErrorMessage key={k} field={k} value={v} />;
+    });
+  }
   return (
     <main className="flex-grow flex justify-center">
       <div className="py-12 px-5 container md:w-1/2">
         <h2 className="text-2xl font-bold">Register</h2>
         <div className="mt-8">
           <div className="grid grid-cols-1 gap-6">
+            {errorMessages}
             <label className="block">
               <span className="text-gray-700">Full name</span>
               <input
@@ -78,6 +97,8 @@ const Register = () => {
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
                 placeholder=""
+                value={state.name}
+                onChange={onChanceName}
               />
             </label>
             <label className="block">
@@ -94,6 +115,8 @@ const Register = () => {
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
                 placeholder="john@example.com"
+                value={state.email}
+                onChange={onChanceEmail}
               />
             </label>
             <label className="block">
@@ -110,9 +133,11 @@ const Register = () => {
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
                 placeholder="********"
+                value={state.password}
+                onChange={onChancePassword}
               />
             </label>
-            <label className="block">
+            <label className="hidden">
               <span className="text-gray-700">Password Confirmation</span>
               <input
                 type="password"
@@ -126,6 +151,8 @@ const Register = () => {
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
                 placeholder="********"
+                value={state.passwordConfirmation}
+                onChange={onChancePasswordConfirmation}
               />
             </label>
             <div className="block">
@@ -158,7 +185,7 @@ const Register = () => {
               data-mdb-ripple="true"
               data-mdb-ripple-color="light"
               disabled={isLoading}
-              onClick={authTokenRequest}
+              onClick={authRegisterRequest}
             >
               Register
             </button>
