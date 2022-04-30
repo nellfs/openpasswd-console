@@ -29,11 +29,17 @@ const Layout = (props: ILayoutProps) => {
               <Link className="text-2xl font-bold text-white" to="/">
                 OpenPasswd
               </Link>
-
-              <Menu as="div" className="relative inline-block text-left">
+              {/* 
+              <Menu
+                as="div"
+                className={classNames('relative text-left', {
+                  hidden: !!!token,
+                  ['inline-block']: !!token,
+                })}
+              >
                 <div>
                   <Menu.Button className="inline-flex justify-center w-fullpx-4 py-2 text-white text-sm font-medium">
-                    Categories {token}
+                    Groups
                     <ChevronDownIcon
                       className="-mr-1 ml-2 h-5 w-5"
                       aria-hidden="true"
@@ -55,14 +61,14 @@ const Layout = (props: ILayoutProps) => {
                               'block px-4 py-2 text-sm'
                             )}
                           >
-                            Default
+                            All
                           </a>
                         )}
                       </Menu.Item>
                     </div>
                   </Menu.Items>
                 </Transition>
-              </Menu>
+              </Menu> */}
             </div>
           </div>
         </div>

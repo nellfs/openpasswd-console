@@ -53,7 +53,10 @@ const Login = () => {
   const onChangeRemember = (event: React.ChangeEvent<HTMLInputElement>) =>
     setState({ ...state, remember: event.target.checked });
 
-  const authTokenRequest = async () => {
+  const authTokenRequest = async (
+    event: React.ChangeEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
     setIsLoading(true);
     let login = await authToken(state);
     if ('access_token' in login) {
@@ -78,13 +81,14 @@ const Login = () => {
       <div className="py-12 px-5 container md:w-1/2">
         <h2 className="text-2xl font-bold">Login</h2>
         <div className="mt-8">
-          <div className="grid grid-cols-1 gap-6">
-            {errorMessages}
-            <label className="block">
-              <span className="text-gray-700">Email</span>
-              <input
-                type="email"
-                className="
+          <form onSubmit={authTokenRequest}>
+            <div className="grid grid-cols-1 gap-6">
+              {errorMessages}
+              <label className="block">
+                <span className="text-gray-700">Email</span>
+                <input
+                  type="email"
+                  className="
                     mt-1
                     block
                     w-full
@@ -93,16 +97,16 @@ const Login = () => {
                     shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
-                placeholder="john@example.com"
-                value={state.email}
-                onChange={onChangeEmail}
-              />
-            </label>
-            <label className="block">
-              <span className="text-gray-700">Password</span>
-              <input
-                type="password"
-                className="
+                  placeholder="john@example.com"
+                  value={state.email}
+                  onChange={onChangeEmail}
+                />
+              </label>
+              <label className="block">
+                <span className="text-gray-700">Password</span>
+                <input
+                  type="password"
+                  className="
                     mt-1
                     block
                     w-full
@@ -111,35 +115,35 @@ const Login = () => {
                     shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
-                placeholder="********"
-                value={state.password}
-                onChange={onChangePassword}
-              />
-            </label>
-            <div className="block">
-              <div className="mt-2">
-                <div className="flex justify-between">
-                  <label className="inline-flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={state.remember}
-                      onChange={onChangeRemember}
-                    />
-                    <span className="ml-2">Remember-me</span>
-                  </label>
-                  <Link
-                    className="text-blue-600 hover:underline"
-                    to="/register"
-                  >
-                    Register new account
-                  </Link>
+                  placeholder="********"
+                  value={state.password}
+                  onChange={onChangePassword}
+                />
+              </label>
+              <div className="block">
+                <div className="mt-2">
+                  <div className="flex justify-between">
+                    <label className="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={state.remember}
+                        onChange={onChangeRemember}
+                      />
+                      <span className="ml-2">Remember-me</span>
+                    </label>
+                    <Link
+                      className="text-blue-600 hover:underline"
+                      to="/register"
+                    >
+                      Register new account
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <button
-              type="button"
-              className="
+              <button
+                type="submit"
+                className="
                   inline-block
                   px-7 py-3
                   disabled:bg-slate-600
@@ -154,14 +158,14 @@ const Login = () => {
                   transition duration-150 ease-in-out
                   w-full
                 "
-              data-mdb-ripple="true"
-              data-mdb-ripple-color="light"
-              disabled={isLoading}
-              onClick={authTokenRequest}
-            >
-              Login
-            </button>
-          </div>
+                data-mdb-ripple="true"
+                data-mdb-ripple-color="light"
+                disabled={isLoading}
+              >
+                Login
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </main>

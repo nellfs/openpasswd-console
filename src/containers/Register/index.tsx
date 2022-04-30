@@ -49,7 +49,10 @@ const Register = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => setState({ ...state, passwordConfirmation: event.target.value });
 
-  const authRegisterRequest = async () => {
+  const authRegisterRequest = async (
+    event: React.ChangeEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
     setIsLoading(true);
 
     const result = await authRegister(state);
@@ -81,13 +84,14 @@ const Register = () => {
       <div className="py-12 px-5 container md:w-1/2">
         <h2 className="text-2xl font-bold">Register</h2>
         <div className="mt-8">
-          <div className="grid grid-cols-1 gap-6">
-            {errorMessages}
-            <label className="block">
-              <span className="text-gray-700">Full name</span>
-              <input
-                type="text"
-                className="
+          <form onSubmit={authRegisterRequest}>
+            <div className="grid grid-cols-1 gap-6">
+              {errorMessages}
+              <label className="block">
+                <span className="text-gray-700">Full name</span>
+                <input
+                  type="text"
+                  className="
                     mt-1
                     block
                     w-full
@@ -96,16 +100,16 @@ const Register = () => {
                     shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
-                placeholder=""
-                value={state.name}
-                onChange={onChanceName}
-              />
-            </label>
-            <label className="block">
-              <span className="text-gray-700">Email</span>
-              <input
-                type="email"
-                className="
+                  placeholder=""
+                  value={state.name}
+                  onChange={onChanceName}
+                />
+              </label>
+              <label className="block">
+                <span className="text-gray-700">Email</span>
+                <input
+                  type="email"
+                  className="
                     mt-1
                     block
                     w-full
@@ -114,16 +118,16 @@ const Register = () => {
                     shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
-                placeholder="john@example.com"
-                value={state.email}
-                onChange={onChanceEmail}
-              />
-            </label>
-            <label className="block">
-              <span className="text-gray-700">Password</span>
-              <input
-                type="password"
-                className="
+                  placeholder="john@example.com"
+                  value={state.email}
+                  onChange={onChanceEmail}
+                />
+              </label>
+              <label className="block">
+                <span className="text-gray-700">Password</span>
+                <input
+                  type="password"
+                  className="
                     mt-1
                     block
                     w-full
@@ -132,16 +136,16 @@ const Register = () => {
                     shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
-                placeholder="********"
-                value={state.password}
-                onChange={onChancePassword}
-              />
-            </label>
-            <label className="hidden">
-              <span className="text-gray-700">Password Confirmation</span>
-              <input
-                type="password"
-                className="
+                  placeholder="********"
+                  value={state.password}
+                  onChange={onChancePassword}
+                />
+              </label>
+              <label className="hidden">
+                <span className="text-gray-700">Password Confirmation</span>
+                <input
+                  type="password"
+                  className="
                     mt-1
                     block
                     w-full
@@ -150,24 +154,24 @@ const Register = () => {
                     shadow-sm
                     focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
                   "
-                placeholder="********"
-                value={state.passwordConfirmation}
-                onChange={onChancePasswordConfirmation}
-              />
-            </label>
-            <div className="block">
-              <div className="mt-2">
-                <div className="flex justify-between">
-                  <Link className="text-blue-600 hover:underline" to="/login">
-                    Already have an account
-                  </Link>
+                  placeholder="********"
+                  value={state.passwordConfirmation}
+                  onChange={onChancePasswordConfirmation}
+                />
+              </label>
+              <div className="block">
+                <div className="mt-2">
+                  <div className="flex justify-between">
+                    <Link className="text-blue-600 hover:underline" to="/login">
+                      Already have an account
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <button
-              type="button"
-              className="
+              <button
+                type="submit"
+                className="
                   inline-block
                   px-7 py-3
                   disabled:bg-slate-600
@@ -182,14 +186,14 @@ const Register = () => {
                   transition duration-150 ease-in-out
                   w-full
                 "
-              data-mdb-ripple="true"
-              data-mdb-ripple-color="light"
-              disabled={isLoading}
-              onClick={authRegisterRequest}
-            >
-              Register
-            </button>
-          </div>
+                data-mdb-ripple="true"
+                data-mdb-ripple-color="light"
+                disabled={isLoading}
+              >
+                Register
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </main>

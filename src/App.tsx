@@ -5,6 +5,7 @@ import Home from './containers/Home';
 import Login from './containers/Login';
 import RequireAuth from './components/Auth/RequireAuth';
 import Register from './containers/Register';
+import Account from './containers/Account';
 
 class App extends React.Component {
   render() {
@@ -13,6 +14,15 @@ class App extends React.Component {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/group/:name"
+            element={
+              <RequireAuth>
+                <Account />
+              </RequireAuth>
+            }
+          />
+
           <Route
             path="*"
             element={

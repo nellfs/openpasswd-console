@@ -1,21 +1,11 @@
-export interface UserRegister {
-  name: string;
-  email: string;
-  password: string;
-}
+import {
+  UserRegister,
+  LoginRequest,
+  ResponseError,
+  ResponseToken,
+} from './auth';
 
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
+import { AccountGroups } from './account';
 
-export interface ResponseError {
-  error: {
-    [key: string]: string;
-  };
-}
-
-export interface ResponseToken {
-  access_token: string;
-  type: string;
-}
+export type { UserRegister, LoginRequest, ResponseError, ResponseToken };
+export type { AccountGroups };

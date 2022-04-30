@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
-import { listAccountGroups } from '../../services';
+import { listAccounts } from '../../services';
 import { AccountGroups, ResponseError } from '../../services/models';
 
 interface AccountGroup {
@@ -10,13 +10,30 @@ interface AccountGroup {
   name: string;
 }
 
-const Home = () => {
+interface HistoryStateProps {
+  usr: {
+    id: number | undefined;
+  };
+}
+
+const Account = () => {
   const [accountGrupo, setAccountGroup] = useState<AccountGroup[]>([]);
   const token = useRecoilValue(auth_token);
 
+  let { name } = useParams();
+  let {
+    usr: { id },
+  } = history.state as HistoryStateProps;
+
+  if (!id) {
+    console.log('by name ' + name);
+  } else {
+    console.log('by id ' + id);
+  }
+
   useEffect(() => {
     const fetchData = async () => {
-      let result = await listAccountGroups(token);
+      let result = await listAccounts(token);
       if ('items' in result) {
         setAccountGroup((result as AccountGroups).items);
       } else {
@@ -59,7 +76,7 @@ const Home = () => {
     <>
       <header className="bg-white shadow">
         <div className="flex justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Groups</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Accounts</h1>
           <button
             type="button"
             className="
@@ -101,4 +118,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Account;
