@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
+import { Button } from '../../components/Button';
+import { Form, Input } from '../../components/Form';
 import { authRegister, authToken } from '../../services';
 import { ResponseError, ResponseToken } from '../../services/models';
 
@@ -39,20 +41,7 @@ const Register = () => {
   const [errors, setErrors] = useState<ResponseError>();
   const [isLoading, setIsLoading] = useState(false);
 
-  const onChanceName = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setState({ ...state, name: event.target.value });
-  const onChanceEmail = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setState({ ...state, email: event.target.value });
-  const onChancePassword = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setState({ ...state, password: event.target.value });
-  const onChancePasswordConfirmation = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => setState({ ...state, passwordConfirmation: event.target.value });
-
-  const authRegisterRequest = async (
-    event: React.ChangeEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
+  const authRegisterRequest = async () => {
     setIsLoading(true);
 
     const result = await authRegister(state);
@@ -84,81 +73,38 @@ const Register = () => {
       <div className="py-12 px-5 container md:w-1/2">
         <h2 className="text-2xl font-bold">Register</h2>
         <div className="mt-8">
-          <form onSubmit={authRegisterRequest}>
+          <Form onSubmit={authRegisterRequest}>
             <div className="grid grid-cols-1 gap-6">
               {errorMessages}
-              <label className="block">
-                <span className="text-gray-700">Full name</span>
-                <input
-                  type="text"
-                  className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-                  "
-                  placeholder=""
-                  value={state.name}
-                  onChange={onChanceName}
-                />
-              </label>
-              <label className="block">
-                <span className="text-gray-700">Email</span>
-                <input
-                  type="email"
-                  className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-                  "
-                  placeholder="john@example.com"
-                  value={state.email}
-                  onChange={onChanceEmail}
-                />
-              </label>
-              <label className="block">
-                <span className="text-gray-700">Password</span>
-                <input
-                  type="password"
-                  className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-                  "
-                  placeholder="********"
-                  value={state.password}
-                  onChange={onChancePassword}
-                />
-              </label>
-              <label className="hidden">
-                <span className="text-gray-700">Password Confirmation</span>
-                <input
-                  type="password"
-                  className="
-                    mt-1
-                    block
-                    w-full
-                    rounded-md
-                    border-gray-300
-                    shadow-sm
-                    focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
-                  "
-                  placeholder="********"
-                  value={state.passwordConfirmation}
-                  onChange={onChancePasswordConfirmation}
-                />
-              </label>
+              <Input
+                name="Full Name"
+                type="text"
+                value={state.name}
+                onChange={(value) => setState({ ...state, name: value })}
+              />
+              <Input
+                name="Email"
+                type="email"
+                placeholder="john@example.com"
+                value={state.email}
+                onChange={(value) => setState({ ...state, email: value })}
+              />
+              <Input
+                name="Password"
+                type="password"
+                placeholder="********"
+                value={state.password}
+                onChange={(value) => setState({ ...state, password: value })}
+              />
+              <Input
+                name="Password Confirmation"
+                type="password"
+                placeholder="********"
+                value={state.passwordConfirmation}
+                onChange={(value) =>
+                  setState({ ...state, passwordConfirmation: value })
+                }
+              />
               <div className="block">
                 <div className="mt-2">
                   <div className="flex justify-between">
@@ -169,31 +115,11 @@ const Register = () => {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                className="
-                  inline-block
-                  px-7 py-3
-                  disabled:bg-slate-600
-                  bg-blue-600
-                  text-white
-                  font-medium text-sm leading-snug uppercase
-                  rounded
-                  shadow-md
-                  hover:bg-blue-700 hover:shadow-lg
-                  focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-                  active:bg-blue-800 active:shadow-lg
-                  transition duration-150 ease-in-out
-                  w-full
-                "
-                data-mdb-ripple="true"
-                data-mdb-ripple-color="light"
-                disabled={isLoading}
-              >
-                Register
-              </button>
+              <Button type="submit" disabled={isLoading}>
+                Register Login
+              </Button>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </main>

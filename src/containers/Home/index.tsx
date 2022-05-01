@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
-import Modal from '../../components/Modal';
+import { ModalPanel } from '../../components/Modal';
 import { listAccountGroups } from '../../services';
 import { AccountGroups, ResponseError } from '../../services/models';
+import GroupRegisterModal from './GroupRegisterModal';
 
 interface AccountGroup {
   id: number;
@@ -14,6 +15,7 @@ interface AccountGroup {
 const Home = () => {
   const [accountGrupo, setAccountGroup] = useState<AccountGroup[]>([]);
   const token = useRecoilValue(auth_token);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +60,10 @@ const Home = () => {
 
   return (
     <>
-      <Modal />
+      <GroupRegisterModal
+        visible={modalVisible}
+        // onClose={() => setModalVisible(false)}
+      />
       <header className="bg-white shadow">
         <div className="flex justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-900">Groups</h1>
@@ -78,6 +83,7 @@ const Home = () => {
             active:bg-blue-800 active:shadow-lg
             transition duration-150 ease-in-out
           "
+            onClick={() => setModalVisible(true)}
           >
             +
           </button>
