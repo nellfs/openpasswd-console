@@ -1,37 +1,56 @@
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
+import FormErrorView from '../../components/Form/ErrorMessage';
 import { ModalPanel } from '../../components/Modal';
+import { createAccountGroup } from '../../services/account';
+import { ResponseError } from '../../services/models';
 
-export default function GroupRegisterModal(props: { visible: boolean }) {
-  const [state, setState] = useState<{ name: string }>({
-    name: '',
-  });
+export interface GroupRegisterModalProps {
+  visible: boolean;
+  onComplete: () => void;
+  onClose: () => void;
+}
 
-  let errorMessages;
+export default function GroupRegisterModal(props: GroupRegisterModalProps) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState<string>('');
+  const [errors, setErrors] = useState<ResponseError>();
+  const token = useRecoilValue(auth_token);
+
+  const onClose = () => {
+    setName('');
+    props.onClose();
+  };
+
+  const onSubmit = async () => {
+    setIsLoading(true);
+    let result = await createAccountGroup(token, name);
+    if ('id' in result) {
+      props.onComplete();
+      onClose();
+    } else {
+      setErrors(result as ResponseError);
+    }
+    setIsLoading(false);
+  };
 
   return (
-    <ModalPanel visible={props.visible} onClose={() => {}}>
-      <h2 className="text-2xl font-bold mb-8">Login</h2>
-      <Form onSubmit={() => {}}>
+    <ModalPanel visible={props.visible} onClose={onClose}>
+      <h2 className="text-2xl font-bold mb-8">Create Group</h2>
+      <Form onSubmit={onSubmit}>
         <div className="grid grid-cols-1 gap-6">
-          {errorMessages}
+          <FormErrorView responseError={errors} />
           <Input
-            name="Email"
-            type="email"
-            placeholder="john@example.com"
-            value={'email'}
-            onChange={(value) => setState({ ...state, name: value })}
-          />
-          <Input
-            name="Password"
-            type="password"
-            placeholder="********"
-            value={'password'}
-            onChange={(value) => setState({ ...state, name: value })}
+            name="Name"
+            type="text"
+            value={name}
+            onChange={(value) => setName(value)}
           />
           <Button type="submit" disabled={false}>
-            Login
+            Create
           </Button>
         </div>
       </Form>

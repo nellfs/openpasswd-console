@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Checkbox, Form, Input } from '../../components/Form';
+import FormErrorView from '../../components/Form/ErrorMessage';
 import { authToken } from '../../services';
 import { ResponseError, ResponseToken } from '../../services/models';
 
@@ -18,20 +19,6 @@ interface LocationProps {
     from: Location;
   };
 }
-
-type ErrorProps = {
-  field: string;
-  value: string;
-};
-
-const ErrorMessage = (props: ErrorProps) => (
-  <div
-    className="bg-red-100 border border-red-400 text-red-700 px-4 rounded relative"
-    role="alert"
-  >
-    <span className="block sm:inline">{props.value}</span>
-  </div>
-);
 
 const Login = () => {
   const navigate = useNavigate();
@@ -60,14 +47,6 @@ const Login = () => {
     setIsLoading(false);
   };
 
-  let errorMessages;
-  if (errors) {
-    errorMessages = Object.keys(errors?.error).map((k) => {
-      let v = errors?.error[k];
-      return <ErrorMessage key={k} field={k} value={v} />;
-    });
-  }
-
   return (
     <main className="flex-grow flex justify-center">
       <div className="py-12 px-5 container md:w-1/2">
@@ -75,7 +54,7 @@ const Login = () => {
         <div className="mt-8">
           <Form onSubmit={authTokenRequest}>
             <div className="grid grid-cols-1 gap-6">
-              {errorMessages}
+              <FormErrorView responseError={errors} />
               <Input
                 name="Email"
                 type="email"

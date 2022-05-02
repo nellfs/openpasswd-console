@@ -5,7 +5,7 @@ import {
   ResponseToken,
 } from './auth';
 
-import { AccountGroups } from './account';
+import { AccountGroups, AccountGroup, NewAccount } from './account';
 
 export type { UserRegister, LoginRequest, ResponseError, ResponseToken };
-export type { AccountGroups };
+export type { AccountGroups, AccountGroup, NewAccount };

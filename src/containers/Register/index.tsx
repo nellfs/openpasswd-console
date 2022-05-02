@@ -4,10 +4,11 @@ import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
+import FormErrorView from '../../components/Form/ErrorMessage';
 import { authRegister, authToken } from '../../services';
 import { ResponseError, ResponseToken } from '../../services/models';
 
-interface IState {
+interface RegisterState {
   name: string;
   email: string;
   password: string;
@@ -31,7 +32,7 @@ const ErrorMessage = (props: ErrorProps) => (
 const Register = () => {
   const navigate = useNavigate();
 
-  const [state, setState] = useState<IState>({
+  const [state, setState] = useState<RegisterState>({
     name: '',
     email: '',
     password: '',
@@ -61,13 +62,6 @@ const Register = () => {
     setIsLoading(false);
   };
 
-  let errorMessages;
-  if (errors) {
-    errorMessages = Object.keys(errors?.error).map((k) => {
-      let v = errors?.error[k];
-      return <ErrorMessage key={k} field={k} value={v} />;
-    });
-  }
   return (
     <main className="flex-grow flex justify-center">
       <div className="py-12 px-5 container md:w-1/2">
@@ -75,7 +69,7 @@ const Register = () => {
         <div className="mt-8">
           <Form onSubmit={authRegisterRequest}>
             <div className="grid grid-cols-1 gap-6">
-              {errorMessages}
+              <FormErrorView responseError={errors} />
               <Input
                 name="Full Name"
                 type="text"

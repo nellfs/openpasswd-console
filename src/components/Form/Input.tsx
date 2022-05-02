@@ -1,6 +1,6 @@
 export interface InputProps<T> {
   name: string;
-  type: string;
+  type: 'text' | 'password' | 'email';
   value: T;
   placeholder?: string;
   onChange: (v: T) => void;
