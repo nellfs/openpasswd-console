@@ -17,6 +17,7 @@ const Home = () => {
   const [accountGrupo, setAccountGroup] = useState<AccountGroup[]>([]);
   const token = useRecoilValue(auth_token);
   const [modalVisible, setModalVisible] = useState(false);
+  const [welcomeModalVisible, setWelcomeModalVisible] = useState(true);
 
   const fetchData = async () => {
     let result = await listAccountGroups(token);
@@ -63,9 +64,26 @@ const Home = () => {
         onComplete={fetchData}
         onClose={() => setModalVisible(false)}
       />
+      <ModalPanel
+        visible={welcomeModalVisible}
+        onClose={() => setWelcomeModalVisible(false)}
+      >
+        <h1 className="text-3xl font-bold text-gray-900">
+          Welcome to <span className="text-red-500">Alpha</span> Test
+        </h1>
+        <div className="pt-10 text-xl">
+          It's just in <span className="text-red-500">alpha</span> stage, to
+          make a proof of concept.
+        </div>
+        <div className="pt-10 text-xl">
+          Please <span className="font-bold">don't</span> save your real life
+          password, it's still storing the password in plain text and it will be
+          wiped soon.
+        </div>
+      </ModalPanel>
       <header className="bg-white shadow">
         <div className="flex justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl font-bold text-gray-900">Groups</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Account Groups</h1>
           <RoundButton type="button" onClick={() => setModalVisible(true)}>
             +
           </RoundButton>

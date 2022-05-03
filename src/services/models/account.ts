@@ -25,3 +25,10 @@ export interface AccountView {
   name: string;
   level: number;
 }
+
+export interface AccountWithPasswordView {
+  id: number;
+  name: string;
+  username: string;
+  password: string;
+}

@@ -4,8 +4,13 @@ import { useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button, RoundButton } from '../../components/Button';
 import { listAccounts } from '../../services';
+import { getAccountWithPassword } from '../../services/account';
 import { AccountGroups, ResponseError } from '../../services/models';
-import { Accounts, AccountView } from '../../services/models/account';
+import {
+  Accounts,
+  AccountView,
+  AccountWithPasswordView,
+} from '../../services/models/account';
 import AccountRegisterModal from './AccountRegisterModal';
 
 interface AccountGroup {
@@ -23,6 +28,7 @@ const Account = () => {
   const [account, setAccount] = useState<AccountView[]>([]);
   const token = useRecoilValue(auth_token);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   let { name } = useParams();
   let [id, group] = name!.split(':');
@@ -35,11 +41,15 @@ const Account = () => {
   // }
 
   const fetchData = async () => {
-    let result = await listAccounts(token, parseInt(id));
-    if ('items' in result) {
-      setAccount((result as Accounts).items);
-    } else {
-      alert(result as ResponseError);
+    try {
+      let result = await listAccounts(token, parseInt(id));
+      if ('items' in result) {
+        setAccount((result as Accounts).items);
+      } else {
+        alert(result as ResponseError);
+      }
+    } catch (e) {
+      alert(e);
     }
   };
 
@@ -66,11 +76,29 @@ const Account = () => {
             w-full
           "
       key={e.id}
-      onClick={() => navigator.clipboard.writeText(e.name)}
+      disabled={isLoading}
+      onClick={() => copyPassword(e.id)}
     >
       {e.name}
     </button>
   ));
+
+  const copyPassword = async (id: number) => {
+    try {
+      setIsLoading(true);
+      let result = await getAccountWithPassword(token, id);
+      if ('id' in result) {
+        const account = result as AccountWithPasswordView;
+        navigator.clipboard.writeText(account.password);
+      } else {
+        alert(result as ResponseError);
+      }
+    } catch (e) {
+      alert(e);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>

@@ -92,7 +92,7 @@ export default function AccountRegisterModal(props: AccountRegisterModalProps) {
             }
             options={{ '0': 'Open', '1': 'Soft', '2': 'Hard' }}
           />
-          <Button type="submit" disabled={false}>
+          <Button type="submit" disabled={isLoading}>
             Create
           </Button>
         </div>

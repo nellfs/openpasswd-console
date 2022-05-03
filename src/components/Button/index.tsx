@@ -38,8 +38,9 @@ export function RoundButton(props: PropsWithChildren<ButtonProps>) {
     <button
       type={props.type}
       className="
-            inline-block
-            px-5 py-3
+            flex items-center justify-center
+            px-6 py-6
+            max-v-14 max-h-14
             disabled:bg-slate-600
             bg-blue-600
             text-white
