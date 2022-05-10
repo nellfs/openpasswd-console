@@ -5,7 +5,7 @@ import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
 import FormErrorView from '../../components/Form/ErrorMessage';
-import { authRegister, authToken } from '../../services';
+import OpenPasswdClient from '../../services';
 import { ResponseError, ResponseToken } from '../../services/models';
 
 interface RegisterState {
@@ -45,21 +45,21 @@ const Register = () => {
   const authRegisterRequest = async () => {
     setIsLoading(true);
 
-    const result = await authRegister(state);
-    if (typeof result === 'number') {
-      // login
-      setErrors(undefined);
-      let login = await authToken(state);
-      if ('access_token' in login) {
-        setToken((login as ResponseToken).access_token);
-        navigate('/', { replace: true });
+    const openPasswdClient = new OpenPasswdClient(undefined, setToken);
+    try {
+      const _ = await openPasswdClient.authRegister(state);
+      const login = await openPasswdClient.authToken(state);
+      setToken(login.access_token);
+      navigate('/', { replace: true });
+    } catch (e) {
+      if (e instanceof ResponseError) {
+        setErrors(e);
       } else {
-        setErrors(login as ResponseError);
+        console.log(`Exception: ${e}`);
       }
-    } else {
-      setErrors(result as ResponseError);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

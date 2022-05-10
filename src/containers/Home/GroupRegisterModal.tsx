@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
 import FormErrorView from '../../components/Form/ErrorMessage';
 import { ModalPanel } from '../../components/Modal';
-import { createAccountGroup } from '../../services/account';
+import OpenPasswdClient from '../../services';
 import { ResponseError } from '../../services/models';
 
 export interface GroupRegisterModalProps {
@@ -18,7 +18,7 @@ export default function GroupRegisterModal(props: GroupRegisterModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState<string>('');
   const [errors, setErrors] = useState<ResponseError>();
-  const token = useRecoilValue(auth_token);
+  const [token, setToken] = useRecoilState(auth_token);
 
   const onClose = () => {
     setName('');
@@ -27,14 +27,21 @@ export default function GroupRegisterModal(props: GroupRegisterModalProps) {
 
   const onSubmit = async () => {
     setIsLoading(true);
-    let result = await createAccountGroup(token, name);
-    if ('id' in result) {
+
+    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    try {
+      let _ = await openPasswdClient.createAccountGroup(name);
       props.onComplete();
       onClose();
-    } else {
-      setErrors(result as ResponseError);
+    } catch (e) {
+      if (e instanceof ResponseError) {
+        setErrors(e);
+      } else {
+        console.log(`Exception: ${e}`);
+      }
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (
@@ -49,7 +56,7 @@ export default function GroupRegisterModal(props: GroupRegisterModalProps) {
             value={name}
             onChange={(value) => setName(value)}
           />
-          <Button type="submit" disabled={false}>
+          <Button type="submit" disabled={isLoading}>
             Create
           </Button>
         </div>

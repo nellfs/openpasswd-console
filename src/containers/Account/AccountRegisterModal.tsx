@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
 import FormErrorView from '../../components/Form/ErrorMessage';
 import Select from '../../components/Form/Select';
 import { ModalPanel } from '../../components/Modal';
-import { createAccount, createAccountGroup } from '../../services/account';
+import OpenPasswdClient from '../../services';
 import { NewAccount, ResponseError } from '../../services/models';
 
 export interface AccountRegisterModalProps {
@@ -26,7 +26,7 @@ export default function AccountRegisterModal(props: AccountRegisterModalProps) {
     group_id: 0,
   });
   const [errors, setErrors] = useState<ResponseError>();
-  const token = useRecoilValue(auth_token);
+  const [token, setToken] = useRecoilState(auth_token);
   const [level, setLevel] = useState(0);
 
   const onClose = () => {
@@ -42,17 +42,24 @@ export default function AccountRegisterModal(props: AccountRegisterModalProps) {
 
   const onSubmit = async () => {
     setIsLoading(true);
-    let result = await createAccount(token, {
-      ...newAccount,
-      group_id: props.groupId,
-    });
-    if ('id' in result) {
+
+    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    try {
+      let _ = await openPasswdClient.createAccount({
+        ...newAccount,
+        group_id: props.groupId,
+      });
       props.onComplete();
       onClose();
-    } else {
-      setErrors(result as ResponseError);
+    } catch (e) {
+      if (e instanceof ResponseError) {
+        setErrors(e);
+      } else {
+        console.log(`Exception: ${e}`);
+      }
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

@@ -1,75 +1,46 @@
-import classNames from 'classnames';
-import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from '@headlessui/react';
-import { ChevronDownIcon } from '@heroicons/react/solid';
-import Transition from '../Transition';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
+import OpenPasswdClient from '../../services';
+import { ResponseError } from '../../services/models';
 
 interface ILayoutProps {
   children: JSX.Element;
 }
 
-interface ILayoutState {
-  CategoryVisible: boolean;
-}
-
 const Layout = (props: ILayoutProps) => {
-  const [state, setState] = useState<ILayoutState>({ CategoryVisible: false });
+  const [token, setToken] = useRecoilState(auth_token);
 
-  const token = useRecoilValue(auth_token);
+  const onClickLogout = async () => {
+    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    try {
+      let _ = await openPasswdClient.authLogout();
+    } catch (e) {
+      if (e instanceof ResponseError) {
+        console.log(`ResponseError: ${e}`);
+      } else {
+        console.log(`Exception: ${e}`);
+      }
+    } finally {
+      setToken(undefined);
+    }
+  };
 
   return (
     <div className="flex flex-col h-screen">
       <nav className="bg-gray-800">
         <div className="px-6 md:px-4 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-10">
-              <Link className="text-2xl font-bold text-white" to="/">
-                OpenPasswd
-              </Link>
-              {/* 
-              <Menu
-                as="div"
-                className={classNames('relative text-left', {
-                  hidden: !!!token,
-                  ['inline-block']: !!token,
-                })}
-              >
-                <div>
-                  <Menu.Button className="inline-flex justify-center w-fullpx-4 py-2 text-white text-sm font-medium">
-                    Groups
-                    <ChevronDownIcon
-                      className="-mr-1 ml-2 h-5 w-5"
-                      aria-hidden="true"
-                    />
-                  </Menu.Button>
-                </div>
-
-                <Transition>
-                  <Menu.Items className="origin-top-left absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active
-                                ? 'bg-gray-100 text-gray-900'
-                                : 'text-gray-700',
-                              'block px-4 py-2 text-sm'
-                            )}
-                          >
-                            All
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu> */}
-            </div>
+            <Link className="text-2xl font-bold text-white" to="/">
+              OpenPasswd
+            </Link>
+            <button
+              type="button"
+              className="text-xl font-bold text-white"
+              onClick={onClickLogout}
+            >
+              Logout
+            </button>
           </div>
         </div>
       </nav>

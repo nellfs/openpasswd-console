@@ -9,7 +9,10 @@ export interface LoginRequest {
   password: string;
 }
 
-export interface ResponseError {
+export class ResponseError {
+  constructor() {
+    this.error = {};
+  }
   error: {
     [key: string]: string;
   };

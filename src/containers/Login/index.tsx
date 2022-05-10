@@ -5,8 +5,8 @@ import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Checkbox, Form, Input } from '../../components/Form';
 import FormErrorView from '../../components/Form/ErrorMessage';
-import { authToken } from '../../services';
-import { ResponseError, ResponseToken } from '../../services/models';
+import OpenPasswdClient from '../../services';
+import { ResponseError } from '../../services/models';
 
 interface IState {
   email: string;
@@ -37,14 +37,20 @@ const Login = () => {
 
   const authTokenRequest = async () => {
     setIsLoading(true);
-    let login = await authToken(state);
-    if ('access_token' in login) {
-      setToken((login as ResponseToken).access_token);
+    let openPasswdClient = new OpenPasswdClient(undefined, setToken);
+    try {
+      let login = await openPasswdClient.authToken(state);
+      setToken(login.access_token);
       navigate(from, { replace: true });
-    } else {
-      setErrors(login as ResponseError);
+    } catch (e) {
+      if (e instanceof ResponseError) {
+        setErrors(e);
+      } else {
+        console.log(`Exception: ${e}`);
+      }
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   return (

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useParams } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
-import { Button, RoundButton } from '../../components/Button';
-import { listAccounts } from '../../services';
-import { getAccountWithPassword } from '../../services/account';
-import { AccountGroups, ResponseError } from '../../services/models';
+import { RoundButton } from '../../components/Button';
+import OpenPasswdClient from '../../services';
+import { ResponseError } from '../../services/models';
 import {
   Accounts,
   AccountView,
@@ -26,7 +25,7 @@ interface HistoryStateProps {
 
 const Account = () => {
   const [account, setAccount] = useState<AccountView[]>([]);
-  const token = useRecoilValue(auth_token);
+  const [token, setToken] = useRecoilState(auth_token);
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,15 +40,16 @@ const Account = () => {
   // }
 
   const fetchData = async () => {
+    let openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
-      let result = await listAccounts(token, parseInt(id));
-      if ('items' in result) {
-        setAccount((result as Accounts).items);
-      } else {
-        alert(result as ResponseError);
-      }
+      let result = await openPasswdClient.listAccounts(parseInt(id));
+      setAccount(result.items);
     } catch (e) {
-      alert(e);
+      if (e instanceof ResponseError) {
+        console.log(`ResponseError: ${e}`);
+      } else {
+        console.log(`Exception: ${e}`);
+      }
     }
   };
 
@@ -84,17 +84,17 @@ const Account = () => {
   ));
 
   const copyPassword = async (id: number) => {
+    let openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
       setIsLoading(true);
-      let result = await getAccountWithPassword(token, id);
-      if ('id' in result) {
-        const account = result as AccountWithPasswordView;
-        navigator.clipboard.writeText(account.password);
-      } else {
-        alert(result as ResponseError);
-      }
+      let account = await openPasswdClient.getAccountWithPassword(id);
+      navigator.clipboard.writeText(account.password);
     } catch (e) {
-      alert(e);
+      if (e instanceof ResponseError) {
+        console.log(`ResponseError: ${e}`);
+      } else {
+        console.log(`Exception: ${e}`);
+      }
     } finally {
       setIsLoading(false);
     }

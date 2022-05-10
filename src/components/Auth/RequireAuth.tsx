@@ -3,16 +3,16 @@ import { useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
 
 export default function RequireAuth({ children }: { children: JSX.Element }) {
-  let auth = useRecoilValue(auth_token);
-  let location = useLocation();
+  const token = useRecoilValue(auth_token);
+  const location = useLocation();
 
-  if (!auth) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+  if (token) {
+    const claims = JSON.parse(atob(token.split('.')[1]));
+
+    if (Date.now() < claims.exp * 1000) {
+      return children;
+    }
   }
 
-  return children;
+  return <Navigate to="/login" state={{ from: location }} replace />;
 }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { auth_token } from '../../atoms';
 import { RoundButton } from '../../components/Button';
 import { ModalPanel } from '../../components/Modal';
-import { listAccountGroups } from '../../services';
-import { AccountGroups, ResponseError } from '../../services/models';
+import OpenPasswdClient from '../../services';
+import { ResponseError } from '../../services/models';
 import GroupRegisterModal from './GroupRegisterModal';
 
 interface AccountGroup {
@@ -15,16 +15,21 @@ interface AccountGroup {
 
 const Home = () => {
   const [accountGrupo, setAccountGroup] = useState<AccountGroup[]>([]);
-  const token = useRecoilValue(auth_token);
+  const [token, setToken] = useRecoilState(auth_token);
   const [modalVisible, setModalVisible] = useState(false);
-  const [welcomeModalVisible, setWelcomeModalVisible] = useState(true);
+  const [welcomeModalVisible, setWelcomeModalVisible] = useState(false);
 
   const fetchData = async () => {
-    let result = await listAccountGroups(token);
-    if ('items' in result) {
-      setAccountGroup((result as AccountGroups).items);
-    } else {
-      alert(result as ResponseError);
+    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    try {
+      let result = await openPasswdClient.listAccountGroups();
+      setAccountGroup(result.items);
+    } catch (e) {
+      if (e instanceof ResponseError) {
+        console.log(`ResponseError: ${e}`);
+      } else {
+        console.log(`Exception: ${e}`);
+      }
     }
   };
 
