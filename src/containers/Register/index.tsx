@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
 import FormErrorView from '../../components/Form/ErrorMessage';
 import OpenPasswdClient from '../../services';
-import { ResponseError, ResponseToken } from '../../services/models';
+import { ResponseError } from '../../services/models';
 
 interface RegisterState {
   name: string;
@@ -14,20 +14,6 @@ interface RegisterState {
   password: string;
   passwordConfirmation: string;
 }
-
-type ErrorProps = {
-  field: string;
-  value: string;
-};
-
-const ErrorMessage = (props: ErrorProps) => (
-  <div
-    className="bg-red-100 border border-red-400 text-red-700 px-4 rounded relative"
-    role="alert"
-  >
-    <span className="block sm:inline">{props.value}</span>
-  </div>
-);
 
 const Register = () => {
   const navigate = useNavigate();
@@ -38,7 +24,7 @@ const Register = () => {
     password: '',
     passwordConfirmation: '',
   });
-  const [_, setToken] = useRecoilState(auth_token);
+  const setToken = useRecoilState(auth_token)[1];
   const [errors, setErrors] = useState<ResponseError>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +33,7 @@ const Register = () => {
 
     const openPasswdClient = new OpenPasswdClient(undefined, setToken);
     try {
-      const _ = await openPasswdClient.authRegister(state);
+      await openPasswdClient.authRegister(state);
       const login = await openPasswdClient.authToken(state);
       setToken(login.access_token);
       navigate('/', { replace: true });

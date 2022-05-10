@@ -5,8 +5,8 @@ export interface SelectProps {
   onChange: (value: string) => void;
 }
 
-export default function Select<T extends string | number>(props: SelectProps) {
-  let options = Object.keys(props.options).map((k) => (
+export default function Select(props: SelectProps) {
+  const options = Object.keys(props.options).map((k) => (
     <option key={k} value={k}>
       {props.options[k]}
     </option>

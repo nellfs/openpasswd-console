@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 import { RoundButton } from '../../components/Button';
 import { ModalPanel } from '../../components/Modal';
@@ -20,9 +20,9 @@ const Home = () => {
   const [welcomeModalVisible, setWelcomeModalVisible] = useState(false);
 
   const fetchData = async () => {
-    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    const openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
-      let result = await openPasswdClient.listAccountGroups();
+      const result = await openPasswdClient.listAccountGroups();
       setAccountGroup(result.items);
     } catch (e) {
       if (e instanceof ResponseError) {
@@ -35,7 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData().catch(console.error);
-  }, []);
+  });
 
   const elements = accountGrupo.map((e) => (
     <Link

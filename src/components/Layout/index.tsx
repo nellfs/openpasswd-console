@@ -12,9 +12,9 @@ const Layout = (props: ILayoutProps) => {
   const [token, setToken] = useRecoilState(auth_token);
 
   const onClickLogout = async () => {
-    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    const openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
-      let _ = await openPasswdClient.authLogout();
+      await openPasswdClient.authLogout();
     } catch (e) {
       if (e instanceof ResponseError) {
         console.log(`ResponseError: ${e}`);

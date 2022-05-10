@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
@@ -27,7 +27,6 @@ export default function AccountRegisterModal(props: AccountRegisterModalProps) {
   });
   const [errors, setErrors] = useState<ResponseError>();
   const [token, setToken] = useRecoilState(auth_token);
-  const [level, setLevel] = useState(0);
 
   const onClose = () => {
     setNewAccount({
@@ -43,9 +42,9 @@ export default function AccountRegisterModal(props: AccountRegisterModalProps) {
   const onSubmit = async () => {
     setIsLoading(true);
 
-    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    const openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
-      let _ = await openPasswdClient.createAccount({
+      await openPasswdClient.createAccount({
         ...newAccount,
         group_id: props.groupId,
       });

@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 import { RoundButton } from '../../components/Button';
 import OpenPasswdClient from '../../services';
 import { ResponseError } from '../../services/models';
-import {
-  Accounts,
-  AccountView,
-  AccountWithPasswordView,
-} from '../../services/models/account';
+import { AccountView } from '../../services/models/account';
 import AccountRegisterModal from './AccountRegisterModal';
 
-interface AccountGroup {
-  id: number;
-  name: string;
-}
-
-interface HistoryStateProps {
-  usr?: {
-    id: number | undefined;
-  };
-}
+// interface HistoryStateProps {
+//   usr?: {
+//     id: number | undefined;
+//   };
+// }
 
 const Account = () => {
+  const navigate = useNavigate();
   const [account, setAccount] = useState<AccountView[]>([]);
   const [token, setToken] = useRecoilState(auth_token);
   const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  let { name } = useParams();
-  let [id, group] = name!.split(':');
+  const { name } = useParams();
+
+  let id: undefined | number = undefined;
+  let group = 'undefined';
+
+  if (name) {
+    const [name0, name1] = name.split(':');
+    id = parseInt(name0);
+    group = name1;
+  } else {
+    navigate('/', { replace: true });
+  }
+
   // let state = history.state as HistoryStateProps | undefined;
 
   // if (state || state!.usr || state!.usr!.id) {
@@ -40,9 +43,10 @@ const Account = () => {
   // }
 
   const fetchData = async () => {
-    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    if (!id) return;
+    const openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
-      let result = await openPasswdClient.listAccounts(parseInt(id));
+      const result = await openPasswdClient.listAccounts(id);
       setAccount(result.items);
     } catch (e) {
       if (e instanceof ResponseError) {
@@ -55,7 +59,7 @@ const Account = () => {
 
   useEffect(() => {
     fetchData().catch(console.error);
-  }, []);
+  });
 
   const elements = account.map((e) => (
     <button
@@ -84,10 +88,10 @@ const Account = () => {
   ));
 
   const copyPassword = async (id: number) => {
-    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    const openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
       setIsLoading(true);
-      let account = await openPasswdClient.getAccountWithPassword(id);
+      const account = await openPasswdClient.getAccountWithPassword(id);
       navigator.clipboard.writeText(account.password);
     } catch (e) {
       if (e instanceof ResponseError) {

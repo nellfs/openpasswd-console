@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Form, Input } from '../../components/Form';
@@ -28,9 +28,9 @@ export default function GroupRegisterModal(props: GroupRegisterModalProps) {
   const onSubmit = async () => {
     setIsLoading(true);
 
-    let openPasswdClient = new OpenPasswdClient(token, setToken);
+    const openPasswdClient = new OpenPasswdClient(token, setToken);
     try {
-      let _ = await openPasswdClient.createAccountGroup(name);
+      await openPasswdClient.createAccountGroup(name);
       props.onComplete();
       onClose();
     } catch (e) {

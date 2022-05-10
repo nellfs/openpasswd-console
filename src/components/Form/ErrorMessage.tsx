@@ -20,9 +20,9 @@ export interface FormErrorViewProps {
 
 export default function FormErrorView(props: FormErrorViewProps) {
   if (props.responseError) {
-    const { error } = props.responseError!;
-    let result = Object.keys(error).map((k) => {
-      let v = error[k];
+    const { error } = props.responseError;
+    const result = Object.keys(error).map((k) => {
+      const v = error[k];
       return <ErrorMessage key={k} field={k} value={v} />;
     });
     return <>{result}</>;

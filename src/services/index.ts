@@ -13,9 +13,10 @@ import {
   AccountView,
 } from './models';
 
-export type Response = {
+export type Response<T> = {
   status: number;
-  data: any;
+  error?: string;
+  data?: T;
 };
 
 export default class OpenPasswdClient {
@@ -27,7 +28,7 @@ export default class OpenPasswdClient {
     this.basePath = config.openpasswd_server;
   }
 
-  async post(path: string, body: any): Promise<Response> {
+  async post<B, R>(path: string, body: B): Promise<Response<R>> {
     const url = `${this.basePath}${path}`;
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -44,7 +45,7 @@ export default class OpenPasswdClient {
     return this.send(url, options);
   }
 
-  get(path: string): Promise<Response> {
+  get<R>(path: string): Promise<Response<R>> {
     const url = `${this.basePath}${path}`;
     const headers: HeadersInit = {};
     if (this.token) {
@@ -58,12 +59,12 @@ export default class OpenPasswdClient {
     return this.send(url, options);
   }
 
-  async send(url: RequestInfo, init?: RequestInit): Promise<Response> {
+  async send<R>(url: RequestInfo, init?: RequestInit): Promise<Response<R>> {
     try {
-      let response = await fetch(url, init);
-      let data = await response.json();
+      const response = await fetch(url, init);
+      const data = await response.json();
 
-      if (response.status == 400 && this.setToken) {
+      if (response.status === 400 && this.setToken) {
         this.setToken(undefined);
       }
 
@@ -74,53 +75,58 @@ export default class OpenPasswdClient {
     } catch (e) {
       return {
         status: 500,
-        data: `${e}`,
+        error: `${e}`,
       };
     }
   }
 
   async authRegister(user: UserRegister): Promise<ResponseError | number> {
-    let response = await this.post('/api/auth/user', user);
-    if (response.status == 201) {
+    const response = await this.post('/api/auth/user', user);
+    if (response.status === 201) {
       return response.status;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 
   async authToken(login: LoginRequest): Promise<ResponseToken> {
-    let response = await this.post('/api/auth/token', login);
-    if (response.status == 200) {
+    const response = await this.post('/api/auth/token', login);
+    if (response.status === 200) {
       return response.data as ResponseToken;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 
   async authLogout(): Promise<number> {
-    let response = await this.post('/api/auth/logout', undefined);
-    if (response.status == 200) {
+    const response = await this.post('/api/auth/logout', undefined);
+    if (response.status === 200) {
       return response.data as number;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 
   async listAccountGroups(): Promise<AccountGroups> {
-    let response = await this.get('/api/accounts/groups');
-    if (response.status == 200) {
+    const response = await this.get('/api/accounts/groups');
+    if (response.status === 200) {
       return response.data as AccountGroups;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 
   async createAccountGroup(name: string): Promise<AccountGroup> {
-    let response = await this.post('/api/accounts/groups', { name });
-    if (response.status == 201) {
+    const response = await this.post('/api/accounts/groups', { name });
+    if (response.status === 201) {
       return response.data as AccountGroup;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 
@@ -131,29 +137,32 @@ export default class OpenPasswdClient {
       url += `?group_id=${id}`;
     }
 
-    let response = await this.get(url);
-    if (response.status == 200) {
+    const response = await this.get(url);
+    if (response.status === 200) {
       return response.data as Accounts;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 
   async createAccount(newAccount: NewAccount): Promise<AccountView> {
-    let response = await this.post('/api/accounts', newAccount);
-    if (response.status == 201) {
+    const response = await this.post('/api/accounts', newAccount);
+    if (response.status === 201) {
       return response.data as AccountView;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 
   async getAccountWithPassword(id: number): Promise<AccountWithPasswordView> {
-    let response = await this.get(`/api/accounts/${id}`);
-    if (response.status == 200) {
+    const response = await this.get(`/api/accounts/${id}`);
+    if (response.status === 200) {
       return response.data as AccountWithPasswordView;
     } else {
-      throw response.data as ResponseError;
+      const e = response.data as ResponseError;
+      throw e;
     }
   }
 }

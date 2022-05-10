@@ -24,7 +24,7 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
 
-  let from = location.state?.from?.pathname || '/';
+  const from = location.state?.from?.pathname || '/';
 
   const [state, setState] = useState<IState>({
     email: '',
@@ -33,13 +33,13 @@ const Login = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<ResponseError>();
-  const [_, setToken] = useRecoilState(auth_token);
+  const setToken = useRecoilState(auth_token)[1];
 
   const authTokenRequest = async () => {
     setIsLoading(true);
-    let openPasswdClient = new OpenPasswdClient(undefined, setToken);
+    const openPasswdClient = new OpenPasswdClient(undefined, setToken);
     try {
-      let login = await openPasswdClient.authToken(state);
+      const login = await openPasswdClient.authToken(state);
       setToken(login.access_token);
       navigate(from, { replace: true });
     } catch (e) {
