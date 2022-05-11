@@ -38,7 +38,7 @@ const Layout = (props: ILayoutProps) => {
             <button
               type="button"
               className={classNames('text-xl font-bold text-white', {
-                hidden: token === undefined,
+                hidden: !token,
               })}
               onClick={onClickLogout}
             >
