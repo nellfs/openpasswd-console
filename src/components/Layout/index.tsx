@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
@@ -36,7 +37,9 @@ const Layout = (props: ILayoutProps) => {
             </Link>
             <button
               type="button"
-              className="text-xl font-bold text-white"
+              className={classNames('text-xl font-bold text-white', {
+                hidden: token === undefined,
+              })}
               onClick={onClickLogout}
             >
               Logout
