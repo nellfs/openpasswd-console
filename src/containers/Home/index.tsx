@@ -35,7 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData().catch(console.error);
-  });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const elements = accountGrupo.map((e) => (
     <Link

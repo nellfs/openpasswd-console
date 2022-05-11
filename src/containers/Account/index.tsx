@@ -59,7 +59,7 @@ const Account = () => {
 
   useEffect(() => {
     fetchData().catch(console.error);
-  });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const elements = account.map((e) => (
     <button
