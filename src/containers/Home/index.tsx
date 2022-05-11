@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
@@ -35,7 +35,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchData().catch(console.error);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const elements = accountGrupo.map((e) => (
     <Link
@@ -77,13 +77,13 @@ const Home = () => {
           Welcome to <span className="text-red-500">Alpha</span> Test
         </h1>
         <div className="pt-10 text-xl">
-          It's just in <span className="text-red-500">alpha</span> stage, to
-          make a proof of concept.
+          It&apos;s just in <span className="text-red-500">alpha</span> stage,
+          to make a proof of concept.
         </div>
         <div className="pt-10 text-xl">
-          Please <span className="font-bold">don't</span> save your real life
-          password, it's still storing the password in plain text and it will be
-          wiped soon.
+          Please <span className="font-bold">don&apos;t</span> save your real
+          life password, it&apos;s still storing the password in plain text and
+          it will be wiped soon.
         </div>
       </ModalPanel>
       <header className="bg-white shadow">

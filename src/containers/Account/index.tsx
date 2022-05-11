@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { auth_token } from '../../atoms';
@@ -59,7 +59,7 @@ const Account = () => {
 
   useEffect(() => {
     fetchData().catch(console.error);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const elements = account.map((e) => (
     <button

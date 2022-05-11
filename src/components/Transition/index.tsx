@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { Transition as UITransition } from '@headlessui/react';
 
 interface IProps {
