@@ -110,7 +110,7 @@ const Account = () => {
         visible={modalVisible}
         onComplete={fetchData}
         onClose={() => setModalVisible(false)}
-        groupId={parseInt(id)}
+        groupId={id ?? -1}
       />
       <header className="bg-white shadow">
         <div className="flex justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
