@@ -1,7 +1,6 @@
 import {
   UserRegister,
   LoginRequest,
-  ResponseError,
   ResponseToken,
 } from './auth';
 
@@ -14,7 +13,19 @@ import {
   AccountView,
 } from './account';
 
-export { ResponseError };
+
+export class ResponseError {
+  constructor(data: any) {
+    this.error = {};
+    if (data || data.error) {
+      Object.keys(data.error).forEach(key=>this.error[key]=data.error[key]);
+    }
+  }
+  error: {
+    [key: string]: string;
+  };
+}
+
 export type { UserRegister, LoginRequest, ResponseToken };
 export type {
   AccountGroups,

@@ -85,7 +85,7 @@ export default class OpenPasswdClient {
     if (response.status === 201) {
       return response.status;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }
@@ -95,7 +95,7 @@ export default class OpenPasswdClient {
     if (response.status === 200) {
       return response.data as ResponseToken;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }
@@ -105,7 +105,7 @@ export default class OpenPasswdClient {
     if (response.status === 200) {
       return response.data as number;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }
@@ -115,7 +115,7 @@ export default class OpenPasswdClient {
     if (response.status === 200) {
       return response.data as AccountGroups;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }
@@ -125,7 +125,7 @@ export default class OpenPasswdClient {
     if (response.status === 201) {
       return response.data as AccountGroup;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }
@@ -141,7 +141,7 @@ export default class OpenPasswdClient {
     if (response.status === 200) {
       return response.data as Accounts;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }
@@ -151,7 +151,7 @@ export default class OpenPasswdClient {
     if (response.status === 201) {
       return response.data as AccountView;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }
@@ -161,7 +161,7 @@ export default class OpenPasswdClient {
     if (response.status === 200) {
       return response.data as AccountWithPasswordView;
     } else {
-      const e = response.data as ResponseError;
+      const e = new ResponseError(response.data);
       throw e;
     }
   }

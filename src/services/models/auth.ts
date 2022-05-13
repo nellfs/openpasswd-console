@@ -9,15 +9,6 @@ export interface LoginRequest {
   password: string;
 }
 
-export class ResponseError {
-  constructor() {
-    this.error = {};
-  }
-  error: {
-    [key: string]: string;
-  };
-}
-
 export interface ResponseToken {
   access_token: string;
   type: string;
