@@ -62,7 +62,13 @@ export default class OpenPasswdClient {
   async send<R>(url: RequestInfo, init?: RequestInit): Promise<Response<R>> {
     try {
       const response = await fetch(url, init);
-      const data = await response.json();
+      const data = await response.text();
+
+      let json = null;
+      try {
+        json = JSON.parse(data);
+      // eslint-disable-next-line no-empty
+      } catch (e) { }
 
       if (response.status === 400 && this.setToken) {
         this.setToken(undefined);
@@ -70,7 +76,7 @@ export default class OpenPasswdClient {
 
       return {
         status: response.status,
-        data,
+        data: json,
       };
     } catch (e) {
       return {

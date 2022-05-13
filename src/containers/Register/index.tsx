@@ -96,7 +96,7 @@ const Register = () => {
               </div>
 
               <Button type="submit" disabled={isLoading}>
-                Register Login
+                Register
               </Button>
             </div>
           </Form>
