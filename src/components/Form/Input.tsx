@@ -9,7 +9,7 @@ export interface InputProps<T> {
 export default function Input<T extends string | number>(props: InputProps<T>) {
   return (
     <label className="block">
-      <span className="text-gray-700">{props.name}</span>
+      <span className="text-slate-600">{props.name}</span>
       <input
         type={props.type}
         className="
@@ -17,8 +17,7 @@ export default function Input<T extends string | number>(props: InputProps<T>) {
         block
         w-full
         rounded-md
-        border-gray-300
-        shadow-sm
+        border-slate-200
         focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50
       "
         placeholder={props.placeholder}

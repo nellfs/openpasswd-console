@@ -28,8 +28,8 @@ const Layout = (props: ILayoutProps) => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <nav className="bg-gray-800">
+    <div className="flex flex-col h-screen font-body">
+      <nav className="bg-gradient-to-r from-secure-blue to-cyan-500 -secure-blue">
         <div className="px-6 md:px-4 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link className="text-2xl font-bold text-white" to="/">

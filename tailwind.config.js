@@ -5,6 +5,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        body: ['Nunito'],
+        others: ['Poppins']
+      },
       colors: {
         'secure-blue': '#2c6ff3',
       }
