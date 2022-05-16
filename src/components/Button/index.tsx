@@ -14,15 +14,14 @@ export function Button(props: PropsWithChildren<ButtonProps>) {
           inline-block
           px-7 py-3
           disabled:bg-slate-600
-          bg-blue-600
+          bg-secure-blue
           text-white
           font-medium text-sm leading-snug uppercase
           rounded
-          shadow-md
-          hover:bg-blue-700 hover:shadow-lg
-          focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-          active:bg-blue-800 active:shadow-lg
-          transition duration-150 ease-in-out
+          hover:bg-blue-600 
+          focus:bg-blue-600  focus:outline-none focus:ring-0
+          active:bg-blue-800 
+          transition duration-100 ease-in-out
           w-full
         "
       disabled={props.disabled}
@@ -46,10 +45,9 @@ export function RoundButton(props: PropsWithChildren<ButtonProps>) {
             text-white
             font-medium text-sm leading-snug uppercase
             rounded-full
-            shadow-md
-            hover:bg-blue-700 hover:shadow-lg
-            focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0
-            active:bg-blue-800 active:shadow-lg
+            hover:bg-blue-700
+            focus:bg-blue-700 focus:outline-none focus:ring-0
+            active:bg-blue-800 
             transition duration-150 ease-in-out
           "
       disabled={props.disabled}

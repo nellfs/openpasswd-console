@@ -22,7 +22,7 @@ export default function Input<T extends string | number>(props: InputProps<T>) {
       <input
         type={props.type}
         className="
-          mt-3
+          mb-3
           block
           border-0
           w-full

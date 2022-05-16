@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { CubeIcon, MailIcon } from '@heroicons/react/outline'
+import { CubeIcon } from '@heroicons/react/outline'
 
 
 import { auth_token } from '../../atoms';
@@ -59,7 +59,7 @@ const Login = () => {
   return (
     <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen'>
       <div className='bg-white rounded-2xl shadow-2xl flex w-3/5 max-w-4xl'>
-        <div className='w-3/5 p-4 font-body pb-10'>
+        <div className='w-3/5 p-10 font-body pb-10'>
           <div className='text-left font-bold flex flex-row items-start pb-1'>
             <CubeIcon className='text-cyan-500 h-8'></CubeIcon>
             <span className='text-cyan-500 text-2xl'>OpenPasswd</span>
@@ -76,10 +76,18 @@ const Login = () => {
             type="password"
             value={state.password}
             onChange={(value) => setState({ ...state, password: value })} />
-        </div>
 
+          <Link className="text-blue-600 hover:underline"
+            to="/register">Register new account</Link>
+
+          <Button type="submit" disabled={isLoading}>
+            Login
+          </Button>
+
+        </div>
         <div className='w-2/5 bg-gradient-to-t from-secure-blue to-cyan-500 text-white rounded-tr-2xl rounded-br-2xl'><p></p></div>
       </div>
+
     </main>
     // <>
 
