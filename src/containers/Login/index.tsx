@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { CubeIcon, MailIcon } from '@heroicons/react/outline'
+
+
 import { auth_token } from '../../atoms';
 import { Button } from '../../components/Button';
 import { Checkbox, Form, Input } from '../../components/Form';
@@ -54,7 +57,33 @@ const Login = () => {
   };
 
   return (
-    <main className="flex-grow flex justify-center">
+    <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen'>
+      <div className='bg-white rounded-2xl shadow-2xl flex w-3/5 max-w-4xl'>
+        <div className='w-3/5 p-4 font-body pb-10'>
+          <div className='text-left font-bold flex flex-row items-start pb-1'>
+            <CubeIcon className='text-cyan-500 h-8'></CubeIcon>
+            <span className='text-cyan-500 text-2xl'>OpenPasswd</span>
+          </div>
+
+          <p className='text-4xl text-slate-500 font-semibold py-10'>Get secure now.</p>
+          <Input
+            name="Email"
+            type="email"
+            value={state.email}
+            onChange={(value) => setState({ ...state, email: value })} />
+          <Input
+            name="Password"
+            type="password"
+            value={state.password}
+            onChange={(value) => setState({ ...state, password: value })} />
+        </div>
+
+        <div className='w-2/5 bg-gradient-to-t from-secure-blue to-cyan-500 text-white rounded-tr-2xl rounded-br-2xl'><p></p></div>
+      </div>
+    </main>
+    // <>
+
+    /*{ <main className="flex-grow flex justify-center h-screen bg-gradient-to-t from-secure-blue to-cyan-500">
       <div className="py-12 px-5 container md:w-1/2">
         <h2 className="text-2xl font-bold">Login</h2>
         <div className="mt-8">
@@ -66,25 +95,20 @@ const Login = () => {
                 type="email"
                 placeholder="john@example.com"
                 value={state.email}
-                onChange={(value) => setState({ ...state, email: value })}
-              />
+                onChange={(value) => setState({ ...state, email: value })} />
               <Input
                 name="Password"
                 type="password"
                 placeholder="********"
                 value={state.password}
-                onChange={(value) => setState({ ...state, password: value })}
-              />
+                onChange={(value) => setState({ ...state, password: value })} />
               <div className="block">
                 <div className="mt-2">
                   <div className="flex justify-between">
                     <Checkbox
                       name="Remember-me"
                       value={state.remember}
-                      onChange={(value) =>
-                        setState({ ...state, remember: value })
-                      }
-                    />
+                      onChange={(value) => setState({ ...state, remember: value })} />
                     <Link
                       className="text-blue-600 hover:underline"
                       to="/register"
@@ -101,7 +125,7 @@ const Login = () => {
           </Form>
         </div>
       </div>
-    </main>
+    </main></> */
   );
 };
 
