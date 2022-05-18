@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import React from 'react';
 // import Layout from './components/Layout';
-// import Home from './containers/Home';
+import Home from './containers/Home';
 import Login from './containers/Login/index';
-// import RequireAuth from './components/Auth/RequireAuth';
+import RequireAuth from './components/Auth/RequireAuth';
 import Register from './containers/Register';
-// import Account from './containers/Account';
+import Account from './containers/Account';
 
 class App extends React.Component {
   render() {
@@ -13,7 +13,26 @@ class App extends React.Component {
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/group/:name"
+          element={
+            <RequireAuth>
+              <Account />
+            </RequireAuth>
+          }
+        />
+
+        <Route
+          path="*"
+          element={
+            <RequireAuth>
+              <Home />
+            </RequireAuth>
+          }
+        />
       </Routes>
+
     );
   }
 }
