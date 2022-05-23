@@ -57,8 +57,33 @@ const Login = () => {
   };
 
   return (
-    <main className='min-h-screen bg-gradient-to-b from-cyan-500 to-blue-500'>
-    </main>
+    <main className='min-h-screen bg-gradient-to-b from-sky-500 to-blue-700'>
+      <div className='flex flex-col min-h-screen'>
+        <div className='bg-white rounded-2xl shadow-2xl p-8 m-auto'>
+          <div className='text-slate-800 h-8 flex flex-row font-body font-bold'>
+            <CubeIcon></CubeIcon>
+            <h1 className='text-3xl'>OpenPasswd</h1>
+          </div>
+          <div className='font-others text-slate-500'>
+            <p className='flex flex-row justify-center text-2xl mt-10'>
+              Log in to your account
+            </p>
+            <div className='mt-8 flex flex-col gap-1'>
+              <Input
+                name="Email"
+                type="email"
+                value={state.email}
+                onChange={(value) => setState({ ...state, email: value })} />
+              <Input
+                name="Password"
+                type="password"
+                value={state.password}
+                onChange={(value) => setState({ ...state, password: value })} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </main >
     // <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen bg-gradient-to-t from-blue-800 to-blue-500'>
     //   <div className='bg-white rounded-2xl shadow-2xl flex flex-row w-full rounded-tr-3xl rounded-br-3xl '>
     //     <div className='w-3/5 p-10 font-body pb-10'>
