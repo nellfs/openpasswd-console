@@ -57,16 +57,18 @@ const Login = () => {
   };
 
   return (
-    <main className='min-h-screen bg-gradient-to-b from-sky-500 to-blue-700'>
-      <div className='flex flex-col min-h-screen'>
-        <div className='bg-white rounded-2xl shadow-2xl p-8 m-auto'>
+
+    //flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen bg-gradient-to-t from-blue-800 to-blue-500
+    <main className='flex items-center justify-center min-h-screen bg-blue-700'>
+      <div className='flex flex-row min-h-screen '>
+        <div className='h-96 w-96 shadow-2xl bg-white rounded-tl-2xl rounded-bl-2xl  p-8 m-auto'>
           <div className='text-slate-800 h-8 flex flex-row font-body font-bold'>
             <CubeIcon></CubeIcon>
             <h1 className='text-3xl'>OpenPasswd</h1>
           </div>
-          <div className='font-others text-slate-500'>
-            <p className='flex flex-row justify-center text-2xl mt-10'>
-              Log in to your account
+          <div className='font-body text-slate-800'>
+            <p className='flex flex-row justify-center text-4xl font-extrabold mt-10'>
+              Log in.
             </p>
             <div className='mt-8 flex flex-col gap-1'>
               <Input
@@ -80,6 +82,13 @@ const Login = () => {
                 value={state.password}
                 onChange={(value) => setState({ ...state, password: value })} />
             </div>
+          </div>
+        </div>
+
+        <div className='flex flex-col items-center shadow-2xl h-96 w-64 rounded-tr-2xl rounded-br-2xl p-6 m-auto bg-sky-600'>
+          <div className='font-others text-white text-center'>
+            <h1 className='flex font-bold text-3xl'>{"We won't forget your passwords"}</h1>
+            <p className='mt-8'>{"Organize your passwords however you like!"}</p>
           </div>
         </div>
       </div>
