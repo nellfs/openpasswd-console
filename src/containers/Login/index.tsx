@@ -61,8 +61,8 @@ const Login = () => {
     //flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen bg-gradient-to-t from-blue-800 to-blue-500
     <main className='flex items-center justify-center min-h-screen bg-gradient-to-tl from-secure-blue to-cyan-500'>
       <div className='flex flex-row shadow-2xl rounded-2xl'>
-        <div className='h-96 w-96 bg-white rounded-tl-2xl rounded-bl-2xl p-8 m-auto'>
-          <div className='text-slate-800 h-8 flex flex-row font-body font-bold'>
+        <div className='w-96 h-[27rem] bg-white rounded-tl-2xl rounded-bl-2xl p-8 m-auto'>
+          <div className='text-slate-800 h-8 inline-flex font-body font-bold'>
             <CubeIcon></CubeIcon>
             <h1 className='text-3xl'>OpenPasswd</h1>
           </div>
@@ -76,39 +76,45 @@ const Login = () => {
                 <Input
                   name="Email"
                   type="email"
+                  canHide={false}
                   value={state.email}
                   onChange={(value) => setState({ ...state, email: value })} />
-                <Input
-                  name="Password"
-                  type="password"
-                  value={state.password}
-                  onChange={(value) => setState({ ...state, password: value })} />
-                <div className='flex flex-col gap-1'>
-                  <Checkbox
-                    name="Remember-me"
-                    value={state.remember}
-                    onChange={(value) => setState({ ...state, remember: value })} />
-
-                  <Button type="submit" disabled={isLoading}>
-                    Login
-                  </Button>
-                </div>
               </div>
             </Form>
+            {/* fix later */}
+            <Input
+              name="Password"
+              type="password"
+              canHide={true}
+              value={state.password}
+              onChange={(value) => setState({ ...state, password: value })} />
+            {/* :) */}
+            <div className='flex flex-col gap-7'>
+              <Checkbox
+                name="Remember-me"
+                value={state.remember}
+                onChange={(value) => setState({ ...state, remember: value })} />
+
+
+              <Button theme="default" type="submit" disabled={isLoading}>
+                Login
+              </Button>
+            </div>
           </div>
         </div>
 
-        <div className='flex flex-col items-center justify-center h-96 w-64 rounded-tr-2xl rounded-br-2xl p-6 m-auto bg-gradient-to-b from-cyan-500 to-secure-blue'>
+        <div className='w-64 h-[27rem] m-auto rounded-tr-2xl rounded-br-2xl p-8 bg-gradient-to-b from-cyan-500 to-secure-blue'>
           <div className='font-others text-white text-center'>
             <h1 className='flex font-bold text-4xl'>{"We won't forget your passwords"}</h1>
-            <p className='mt-10 text-1xl'>{"Not have an account yet? create now!"}</p>
+            <p className='mt-10 text-lg'>{"Not have an account yet? Create now!"}</p>
           </div>
           <div className='mt-10'>
-            <Button type="submit" disabled={isLoading}>
-              register
+            <Button theme="inverse" type="submit" disabled={isLoading}>
+              REGISTER ME
             </Button>
           </div>
         </div>
+
       </div>
     </main >
     // <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen bg-gradient-to-t from-blue-800 to-blue-500'>

@@ -1,35 +1,42 @@
 import { PropsWithChildren } from 'react';
 
+import DefaultButton from './DefaultButton'
+import InverseButton from './InverseButton';
+
 export interface ButtonProps {
   type: 'submit' | 'reset' | 'button';
   disabled?: boolean;
+  theme: 'default' | 'danger' | 'inverse';
   onClick?: () => void;
 }
 
 export function Button(props: PropsWithChildren<ButtonProps>) {
-  return (
-    <button
-      className='
-          inline-block
-          px-7 py-3
-          disabled:bg-slate-600
-          bg-sky-600
-          text-white
-          font-medium text-sm leading-snug uppercase
-          rounded-lg
-          hover:bg-secure-blue 
-          focus:bg-blue-600  focus:outline-none focus:ring-0
-          active:bg-blue-800 
-          transition duration-100 ease-in-out
-          w-full
-      '
+  if (props.theme == "default") {
+    return (
+      <DefaultButton
+        type={props.type}
+        disabled={props.disabled}
+        onClick={props.onClick}>
+        {props.children}
+      </DefaultButton>
+    );
+  }
 
+  if (props.theme == "inverse") {
+    return (
+      <InverseButton type={'button'}>
+        {props.children}
+      </InverseButton>
+    );
+  }
+
+  return (
+    <DefaultButton
       type={props.type}
       disabled={props.disabled}
-      onClick={props.onClick}
-    >
+      onClick={props.onClick}>
       {props.children}
-    </button>
+    </DefaultButton>
   );
 }
 
