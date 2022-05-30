@@ -1,4 +1,5 @@
 import { ResponseError } from '../../services/models';
+import { ExclamationIcon } from '@heroicons/react/solid';
 
 export interface ErrorProps {
   field: string;
@@ -7,10 +8,13 @@ export interface ErrorProps {
 
 const ErrorMessage = (props: ErrorProps) => (
   <div
-    className="bg-red-100 border border-red-400 text-red-700 px-4 rounded relative"
+    className="absolute top-8 flex mb-2 justify-center gap-6 shadow-lg font-body bg-red-500 text-white font-bold px-0 w-64 py-1 rounded-lg"
     role="alert"
   >
-    <span className="block sm:inline">{props.value}</span>
+    <div className='flex'>
+      <ExclamationIcon className='h-6' />
+      <span className="inline-flex m-auto">{props.value}</span>
+    </div>
   </div>
 );
 

@@ -19,9 +19,9 @@ function AutoIcon(props: { type: string; }) {
 
 function ShowIcon(props: { type: boolean }) {
   if (props.type === false) {
-    return <EyeIcon className='relative text-sky-600 ml-2 h-8 m-1' />
+    return <EyeIcon className='text-blue-400 h-6' />
   } else if (props.type === true) {
-    return <EyeOffIcon className='relative text-slate-300 ml-2 h-8 m-1' />
+    return <EyeOffIcon className='text-slate-300 h-6' />
   }
   return <div>{props.type}</div>
 }
@@ -83,7 +83,7 @@ export default function Input<T extends string | number>(props: InputProps<T>) {
           onChange={(e) => props.onChange(e.target.value as T)}
         />
 
-        <button className='inline-flex font-others' onClick={togglePassword}>
+        <button className='ml-[88%] m-2 absolute font-others' onClick={togglePassword}>
           <ShowIcon type={passwordShown}></ShowIcon>
         </button>
       </div>

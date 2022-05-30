@@ -12,7 +12,6 @@ function DefaultButton(props: PropsWithChildren<ButtonProps>) {
             className='
           inline-block
           px-7 py-3
-          disabled:bg-slate-600
           font-others
           font-bold
           bg-sky-600

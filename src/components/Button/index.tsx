@@ -40,32 +40,6 @@ export function Button(props: PropsWithChildren<ButtonProps>) {
   );
 }
 
-// export function Button(props: PropsWithChildren<ButtonProps>) {
-//   return (
-//     <button
-//       type={props.type}
-//       className="
-//           inline-block
-//           px-7 py-3
-//           disabled:bg-slate-600
-//           bg-secure-blue
-//           text-white
-//           font-medium text-sm leading-snug uppercase
-//           rounded
-//           hover:bg-blue-600 
-//           focus:bg-blue-600  focus:outline-none focus:ring-0
-//           active:bg-blue-800 
-//           transition duration-100 ease-in-out
-//           w-full
-//         "
-//       disabled={props.disabled}
-//       onClick={props.onClick}
-//     >
-//       {props.children}
-//     </button>
-//   );
-// }
-
 export function RoundButton(props: PropsWithChildren<ButtonProps>) {
   return (
     <button

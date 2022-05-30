@@ -117,7 +117,7 @@ const Account = () => {
           <h1 className="text-3xl font-bold text-gray-900">
             Accounts for {group}
           </h1>
-          <RoundButton type="button" onClick={() => setModalVisible(true)}>
+          <RoundButton theme='default' type="button" onClick={() => setModalVisible(true)}>
             +
           </RoundButton>
         </div>
