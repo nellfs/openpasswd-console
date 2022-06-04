@@ -50,40 +50,41 @@ const Register = () => {
 
   return (
     <main className="flex-grow flex justify-center">
+      <FormErrorView responseError={errors} />
       <div className="py-12 px-5 container md:w-1/2">
         <h2 className="text-2xl font-bold">Register</h2>
         <div className="mt-8">
+
           <Form onSubmit={authRegisterRequest}>
             <div className="grid grid-cols-1 gap-6">
-              <FormErrorView responseError={errors} />
               <Input
                 name="Full Name"
                 type="text"
                 value={state.name}
                 onChange={(value) => setState({ ...state, name: value })}
+                canHide={false}
               />
               <Input
                 name="Email"
                 type="email"
-                placeholder="john@example.com"
                 value={state.email}
                 onChange={(value) => setState({ ...state, email: value })}
-              />
+                canHide={false} />
               <Input
                 name="Password"
                 type="password"
-                placeholder="********"
                 value={state.password}
                 onChange={(value) => setState({ ...state, password: value })}
+                canHide={false}
               />
               <Input
                 name="Password Confirmation"
                 type="password"
-                placeholder="********"
                 value={state.passwordConfirmation}
                 onChange={(value) =>
                   setState({ ...state, passwordConfirmation: value })
                 }
+                canHide={false}
               />
               <div className="block">
                 <div className="mt-2">
@@ -95,7 +96,7 @@ const Register = () => {
                 </div>
               </div>
 
-              <Button type="submit" disabled={isLoading}>
+              <Button type="submit" disabled={isLoading} theme={'default'}>
                 Register
               </Button>
             </div>

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { CubeIcon } from '@heroicons/react/outline'
+import { CubeIcon, TrendingUpIcon } from '@heroicons/react/outline'
 
 
 import { auth_token } from '../../atoms';
@@ -57,12 +57,10 @@ const Login = () => {
   };
 
   return (
-
-    //flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen bg-gradient-to-t from-blue-800 to-blue-500
     <main className='flex flex-col items-center justify-center min-h-screen bg-gradient-to-tl from-secure-blue to-cyan-500'>
       <FormErrorView responseError={errors} />
       <div className='flex flex-row shadow-2xl rounded-2xl'>
-        <div className='w-96 h-[27rem] bg-white rounded-tl-2xl rounded-bl-2xl p-8'>
+        <div className='w-[26rem] h-[27rem] bg-white rounded-tl-2xl rounded-bl-2xl p-8'>
           <div className='text-slate-800 h-8 inline-flex font-body font-semibold'>
             <CubeIcon></CubeIcon>
             <h1 className='text-3xl'>OpenPasswd</h1>
@@ -100,20 +98,19 @@ const Login = () => {
           </div>
         </div>
 
-        <div className='w-64 h-[27rem] m-auto rounded-tr-2xl rounded-br-2xl p-8 bg-gradient-to-b from-cyan-500 to-secure-blue'>
+        <div className='flex flex-col items-center justify-center w-64 h-[27rem] m-auto rounded-tr-2xl rounded-br-2xl px-4 bg-gradient-to-b from-cyan-500 to-secure-blue'>
           <div className='font-others text-white text-center'>
-            <h1 className='flex font-bold text-4xl'>{"We won't forget your passwords"}</h1>
-            <p className='mt-10 text-lg'>{"Not have an account yet? Create now!"}</p>
+            <h1 className='font-bold text-4xl'>{"We won't forget your passwords"}</h1>
+            <p className='mt-8 text-lg'>{"Not have an account yet? Create now!"}</p>
           </div>
-          <div className='flex flex-col justify-center mt-10'>
-            <Link className="text-2xl text-white font-bold font-body hover:underline"
-              to="/register">Register account</Link>
-            <div className='w-32 m-auto mt-3 h-px bg-gradient-to-r from-sky-400 to-blue-400 rounded'></div>
+          <div className='flex flex-col items-center mt-6'>
+            <Link className="text-2xl text-white  transition-all hover:text-[1.65rem] font-bold font-body underline"
+              to="/register">Create account</Link>
           </div>
         </div>
 
       </div>
-    </main >
+    </main>
     // <main className='flex flex-col items-center justify-center w-full flex-1 px-20 text-center min-h-screen bg-gradient-to-t from-blue-800 to-blue-500'>
     //   <div className='bg-white rounded-2xl shadow-2xl flex flex-row w-full rounded-tr-3xl rounded-br-3xl '>
     //     <div className='w-3/5 p-10 font-body pb-10'>
