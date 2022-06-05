@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import React from 'react';
-// import Layout from './components/Layout';
+import Layout from './components/Layout';
 import Home from './containers/Home';
 import Login from './containers/Login/index';
 import RequireAuth from './components/Auth/RequireAuth';
@@ -17,9 +17,11 @@ class App extends React.Component {
         <Route
           path="/group/:name"
           element={
-            <RequireAuth>
-              <Account />
-            </RequireAuth>
+            <Layout>
+              <RequireAuth>
+                <Account />
+              </RequireAuth>
+            </Layout>
           }
         />
 
@@ -27,7 +29,9 @@ class App extends React.Component {
           path="*"
           element={
             <RequireAuth>
-              <Home />
+              <Layout>
+                <Home />
+              </Layout>
             </RequireAuth>
           }
         />
