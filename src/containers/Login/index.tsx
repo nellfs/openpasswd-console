@@ -12,7 +12,6 @@ import OpenPasswdClient from '../../services';
 import { ResponseError } from '../../services/models';
 
 interface IState {
-  name: string
   email: string;
   password: string;
   remember: boolean;
@@ -31,7 +30,6 @@ const Login = () => {
   const from = location.state?.from?.pathname || '/';
 
   const [state, setState] = useState<IState>({
-    name: '',
     email: '',
     password: '',
     remember: false,
