@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { CubeIcon, TrendingUpIcon } from '@heroicons/react/outline'
+import { CubeIcon } from '@heroicons/react/outline'
 
 
 import { auth_token } from '../../atoms';
