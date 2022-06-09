@@ -3,7 +3,7 @@ import InputBar from './InputBar'
 export interface InputProps<T> {
   type: 'text' | 'password' | 'email';
   name: string;
-  canHide: boolean;
+  canHide?: boolean;
   value: T;
   onChange: (value: T) => void;
 }

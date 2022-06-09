@@ -6,7 +6,7 @@ import InverseButton from './InverseButton';
 export interface ButtonProps {
   type: 'submit' | 'reset' | 'button';
   disabled?: boolean;
-  theme: 'default' | 'danger' | 'inverse';
+  theme?: 'default' | 'danger' | 'inverse';
   onClick?: () => void;
 }
 

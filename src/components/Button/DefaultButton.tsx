@@ -16,7 +16,7 @@ function DefaultButton(props: PropsWithChildren<ButtonProps>) {
           font-bold
           bg-sky-600
          text-white
-          text-1xl leading uppercase 
+          text-1xl leading 
           rounded-2xl
           hover:bg-secure-blue 
           focus:bg-blue-600  focus:outline-none focus:ring-0

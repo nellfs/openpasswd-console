@@ -89,7 +89,7 @@ const Home = () => {
       <header className="bg-white shadow">
         <div className="flex justify-between max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-gray-900">Account Groups</h1>
-          <RoundButton type="button" onClick={() => setModalVisible(true)}>
+          <RoundButton type="button" onClick={() => setModalVisible(true)} theme={'default'}>
             +
           </RoundButton>
         </div>

@@ -84,7 +84,6 @@ export default function AccountRegisterModal(props: AccountRegisterModalProps) {
           <Input
             name="Password"
             type="password"
-            placeholder="********"
             value={newAccount.password}
             onChange={(value) =>
               setNewAccount({ ...newAccount, password: value })

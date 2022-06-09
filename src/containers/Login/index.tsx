@@ -59,9 +59,9 @@ const Login = () => {
   return (
     <main className='flex min-h-screen bg-gradient-to-tl from-secure-blue to-cyan-500'>
       <FormErrorView responseError={errors} />
-      <div className='flex flex-col justify-center m-auto sm:flex-row sm:shadow-2xl rounded-2xl'>
-        <div className='items-center bg-white rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none p-8'>
-          <div className='flex flex-row text-slate-800 h-8 font-body font-semibold'>
+      <div className='flex flex-row justify-center m-auto items-center sm-shadow2xl rounded-xl'>
+        <div className='sm:w-96 sm:max-w-96 sm:max-h-[27rem] p-8 bg-white rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none'>
+          <div className='hidden sm:inline-flex text-slate-800 h-8 font-body font-semibold'>
             <CubeIcon />
             <h1 className='text-3xl'>OpenPasswd</h1>
           </div>
@@ -71,7 +71,7 @@ const Login = () => {
             </p>
 
             <Form onSubmit={authTokenRequest}>
-              <div className='mt-8 flex flex-col '>
+              <div className='mt-8 flex flex-col'>
                 <Input
                   name="Email"
                   type="email"
@@ -87,11 +87,14 @@ const Login = () => {
                 onChange={(value) => setState({ ...state, password: value })}
               // onChange={(value) => setState({ ...state, password: value })} 
               />
-              <div className='flex flex-col gap-7 mt-5 mb-7'>
+              <div className='flex flex-row gap-12 mt-5 mb-7 justify-center'>
                 <Checkbox
                   name="Remember-me"
                   value={state.remember}
                   onChange={(value) => setState({ ...state, remember: value })} />
+
+                <Link className='text-1xl text-blue-600 font-body' to='/password_recovery' >Forgot password?</Link>
+
               </div>
               <Button theme="default" type="submit" disabled={isLoading}>
                 Login
@@ -99,7 +102,7 @@ const Login = () => {
             </Form>
           </div>
         </div>
-        <div className='hidden sm:flex flex-col items-center justify-center w-64 h-[27rem] m-auto rounded-tr-2xl rounded-br-2xl px-4 bg-gradient-to-b from-cyan-500 to-secure-blue'>
+        <div className='sm:w-72 sm:max-w-96 h-[430px] hidden sm:flex flex-col px-4 items-center justify-center m-auto rounded-tr-2xl rounded-br-2xl bg-gradient-to-b from-cyan-500 to-secure-blue'>
           <div className='font-others text-white text-center'>
             <h1 className='font-bold text-4xl'>{"We won't forget your passwords"}</h1>
             <p className='mt-8 text-lg'>{"Not have an account yet? Create now!"}</p>
@@ -109,7 +112,6 @@ const Login = () => {
               to="/register">Create account</Link>
           </div>
         </div>
-
       </div>
     </main>
   );
