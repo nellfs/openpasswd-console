@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { CubeIcon } from '@heroicons/react/outline'
@@ -34,6 +34,38 @@ const Login = () => {
     password: '',
     remember: false,
   });
+
+  const [emailIsValid, setEmailIsValid] = useState(true);
+  const [passwordIsValid, setPasswordIsValid] = useState(true);
+  const [formIsValid, setFormIsValid] = useState(false)
+
+  const emailChangeHandler = (value: string) => {
+    setState({ ...state, email: value })
+  };
+
+  const passwordChangeHandler = (value: string) => {
+    setState({ ...state, password: value });
+  };
+
+  const validateEmailHandler = () => {
+    if (state.email.includes('@')) setEmailIsValid(true);
+    else setEmailIsValid(false);
+  }
+
+  const validatePasswordHandler = () => {
+    if (state.password.trim().length > 6) setPasswordIsValid(true);
+    else setPasswordIsValid(false);
+  }
+
+
+  useEffect(() => {
+    setFormIsValid(
+      state.email.includes('@') && state.password.trim().length > 6
+    )
+    console.log(state.email + ".")
+  }, [state.email, state.password]);
+
+
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<ResponseError>();
   const setToken = useRecoilState(auth_token)[1];
@@ -59,7 +91,7 @@ const Login = () => {
   return (
     <main className='flex min-h-screen bg-gradient-to-tl from-secure-blue to-cyan-500'>
       <FormErrorView responseError={errors} />
-      <div className='flex flex-row justify-center m-auto items-center sm-shadow2xl rounded-xl'>
+      <div className='flex flex-row justify-center m-auto items-center shadow-2xl rounded-2xl'>
         <div className='sm:w-96 sm:max-w-96 sm:max-h-[27rem] p-8 bg-white rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none'>
           <div className='hidden sm:inline-flex text-slate-800 h-8 font-body font-semibold'>
             <CubeIcon />
@@ -71,21 +103,24 @@ const Login = () => {
             </p>
 
             <Form onSubmit={authTokenRequest}>
-              <div className='mt-8 flex flex-col'>
-                <Input
-                  name="Email"
-                  type="email"
-                  canHide={false}
-                  value={state.email}
-                  onChange={(value) => setState({ ...state, email: value })} />
-              </div>
+              <div className='mt-8 flex flex-col' />
+              <Input
+                name="Email"
+                type="email"
+                canHide={false}
+                value={state.email}
+                isValid={emailIsValid}
+                onBlur={validateEmailHandler}
+                onChange={(value) => emailChangeHandler(value)} />
+              {/* print for test */}
               <Input
                 name="Password"
                 type="password"
                 canHide={true}
                 value={state.password}
-                onChange={(value) => setState({ ...state, password: value })}
-              // onChange={(value) => setState({ ...state, password: value })} 
+                isValid={passwordIsValid}
+                onBlur={validatePasswordHandler}
+                onChange={(value) => passwordChangeHandler(value)}
               />
               <div className='flex flex-row gap-12 mt-5 mb-7 justify-center'>
                 <Checkbox
@@ -96,7 +131,7 @@ const Login = () => {
                 <Link className='text-1xl text-blue-600 font-body' to='/password_recovery' >Forgot password?</Link>
 
               </div>
-              <Button theme="default" type="submit" disabled={isLoading}>
+              <Button theme="default" type="submit" disabled={!formIsValid || isLoading}>
                 Login
               </Button>
             </Form>

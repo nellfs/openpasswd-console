@@ -1,17 +1,15 @@
 import { PropsWithChildren } from 'react';
-
-
 export interface ButtonProps {
-    type: 'submit' | 'reset' | 'button';
-    disabled?: boolean;
-    onClick?: () => void;
+  type: 'submit' | 'reset' | 'button';
+  disabled?: boolean;
+  onClick?: () => void;
 }
 
 function InverseButton(props: PropsWithChildren<ButtonProps>) {
-    return (
+  return (
 
-        <button
-            className='
+    <button
+      className='
           inline-block
           px-7 py-3
           disabled:bg-slate-600
@@ -30,13 +28,13 @@ function InverseButton(props: PropsWithChildren<ButtonProps>) {
           transition duration-200 ease-in-out
           w-full'
 
-            type={props.type}
-            disabled={props.disabled}
-            onClick={props.onClick}
-        >
-            {props.children}
-        </button>
-    );
+      type={props.type}
+      disabled={props.disabled}
+      onClick={props.onClick}
+    >
+      {props.children}
+    </button>
+  );
 }
 
 export default InverseButton;

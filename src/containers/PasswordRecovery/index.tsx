@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Checkbox, Form, Input } from '../../components/Form';
-import { EmojiSadIcon } from '@heroicons/react/outline'
+import { Input } from '../../components/Form';
+// import { EmojiSadIcon } from '@heroicons/react/outline'
 import { Button } from '../../components/Button';
 
 interface IState {
@@ -20,14 +20,10 @@ const PasswordRecovery = () => {
                     <h1 className="text-center text-4xl text-slate-900 sm:text-2xl">
                         Forgot your password?
                     </h1>
-                    {/* <EmojiSadIcon className='h-8 mb-4'></EmojiSadIcon> */}
-
                     <h2 className='\text-slate-700 font-medium text-2xl sm:text-lg'>
                         how embarrassing...
                     </h2>
-                    <div className='mb-5 w-40 mt-1 bg-slate-200 py-px'>
-
-                    </div>
+                    <div className='mb-5 w-40 mt-1 bg-slate-200 py-px' />
                     <h3 className='text-center sm:w-64'>
                         Please enter your account email address, we will send you an message to change your password.
                     </h3>
@@ -41,10 +37,10 @@ const PasswordRecovery = () => {
                         onChange={(value) => setState({ ...state, email: value })} />
                 </div>
                 <div className='w-full px-20 sm:px-1'>
-                    <Button type={'button'} >{'SEND EMAIL'}</Button>
+                    <Button type={'button'} onClick={() => "null"}>SEND EMAIL</Button>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

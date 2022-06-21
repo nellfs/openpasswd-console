@@ -2,6 +2,7 @@ import { PropsWithChildren } from 'react';
 
 import DefaultButton from './DefaultButton'
 import InverseButton from './InverseButton';
+import LockedButton from './LockedButton';
 
 export interface ButtonProps {
   type: 'submit' | 'reset' | 'button';
@@ -12,14 +13,23 @@ export interface ButtonProps {
 
 export function Button(props: PropsWithChildren<ButtonProps>) {
   if (props.theme == "default") {
-    return (
-      <DefaultButton
-        type={props.type}
-        disabled={props.disabled}
-        onClick={props.onClick}>
-        {props.children}
-      </DefaultButton>
-    );
+    if (!props.disabled) {
+      return (
+        <DefaultButton
+          type={props.type}
+          onClick={props.onClick}>
+          {props.children}
+        </DefaultButton>
+      );
+    } else {
+      return (
+        <LockedButton
+          type={props.type}
+          onClick={props.onClick}>
+          {props.children}
+        </LockedButton>
+      )
+    }
   }
 
   if (props.theme == "inverse") {
@@ -33,7 +43,6 @@ export function Button(props: PropsWithChildren<ButtonProps>) {
   return (
     <DefaultButton
       type={props.type}
-      disabled={props.disabled}
       onClick={props.onClick}>
       {props.children}
     </DefaultButton>

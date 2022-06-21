@@ -62,14 +62,13 @@ const Register = () => {
                 type="text"
                 value={state.name}
                 onChange={(value) => setState({ ...state, name: value })}
-                canHide={false}
               />
               <Input
                 name="Email"
                 type="email"
                 value={state.email}
                 onChange={(value) => setState({ ...state, email: value })}
-                canHide={false} />
+              />
               <Input
                 name="Password"
                 type="password"

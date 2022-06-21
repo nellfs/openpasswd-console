@@ -1,34 +1,33 @@
 import { PropsWithChildren } from 'react';
 
-export interface ButtonProps {
+export interface LockedButton {
     type: 'submit' | 'reset' | 'button';
     onClick?: () => void;
 }
 
-function DefaultButton(props: PropsWithChildren<ButtonProps>) {
+function LockedButton(props: PropsWithChildren<LockedButton>) {
     return (
+
         <button
             className='
           inline-block
           px-7 py-3
+          disabled:bg-slate-400
           font-others
-          font-bold
-          bg-sky-600
-         text-white
-          text-1xl leading uppercase
+          text-slate-200
+          bg-white
+          text-1xl leading uppercase 
           rounded-2xl
-          hover:bg-secure-blue 
-          focus:bg-blue-600  focus:outline-none focus:ring-0
-          active:bg-blue-800 
-          transition duration-100 ease-in-out
+          cursor-not-allowed
           w-full'
 
             type={props.type}
             onClick={props.onClick}
+            disabled
         >
             {props.children}
         </button>
     );
 }
 
-export default DefaultButton;
+export default LockedButton;
