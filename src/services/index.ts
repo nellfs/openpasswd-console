@@ -12,6 +12,7 @@ import {
   AccountWithPasswordView,
   AccountView,
 } from './models';
+import { RecoveryRequest } from './models/recovery';
 
 export type Response<T> = {
   status: number;
@@ -67,7 +68,7 @@ export default class OpenPasswdClient {
       let json = null;
       try {
         json = JSON.parse(data);
-      // eslint-disable-next-line no-empty
+        // eslint-disable-next-line no-empty
       } catch (e) { }
 
       if (response.status === 400 && this.setToken) {
@@ -150,6 +151,11 @@ export default class OpenPasswdClient {
       const e = new ResponseError(response.data);
       throw e;
     }
+  }
+
+  async recoveryPasswordRequest(recovery: RecoveryRequest) {
+    const response = await this.post('/api/auth/password_recovery', recovery)
+    console.log(response.status)
   }
 
   async createAccount(newAccount: NewAccount): Promise<AccountView> {

@@ -53,14 +53,14 @@ const Login = () => {
   }
 
   const validatePasswordHandler = () => {
-    if (state.password.trim().length > 6) setPasswordIsValid(true);
+    if (state.password.trim().length > 3) setPasswordIsValid(true);
     else setPasswordIsValid(false);
   }
 
 
   useEffect(() => {
     setFormIsValid(
-      state.email.includes('@') && state.password.trim().length > 6
+      state.email.includes('@') && state.password.trim().length > 3
     )
     console.log(state.email + ".")
   }, [state.email, state.password]);
@@ -128,7 +128,7 @@ const Login = () => {
                   value={state.remember}
                   onChange={(value) => setState({ ...state, remember: value })} />
 
-                <Link className='text-1xl text-blue-600 font-body' to='/password_recovery' >Forgot password?</Link>
+                <Link className='text-1xl text-blue-600 font-body' to='/forgot_password' >Forgot password?</Link>
 
               </div>
               <Button theme="default" type="submit" disabled={!formIsValid || isLoading}>

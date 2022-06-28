@@ -6,16 +6,16 @@ import Login from './containers/Login/index';
 import RequireAuth from './components/Auth/RequireAuth';
 import Register from './containers/Register';
 import Account from './containers/Account';
-import PasswordRecovery from './containers/PasswordRecovery';
-
+import ForgotPassword from './containers/PasswordRecovery/ForgotPassword';
+import RecoveryPassword from './containers/PasswordRecovery/RecoveryPassword';
 class App extends React.Component {
   render() {
     return (
       <Routes>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/password_recovery" element={<PasswordRecovery />} />
-
+        <Route path="/forgot_password" element={<ForgotPassword />} />
+        <Route path="/recovery_password" element={<RecoveryPassword />} />
         <Route
           path="/group/:name"
           element={

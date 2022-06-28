@@ -34,7 +34,7 @@ export default function AccountRegisterModal(props: AccountRegisterModalProps) {
       level: 0,
       username: '',
       password: '',
-      group_id: 0,
+      group_id: 0
     });
     props.onClose();
   };
