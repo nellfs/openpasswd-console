@@ -12,7 +12,7 @@ import {
   AccountWithPasswordView,
   AccountView,
 } from './models';
-import { RecoveryRequest } from './models/recovery';
+import { ChangedPassword, RecoveryRequest } from './models/recovery';
 
 export type Response<T> = {
   status: number;
@@ -22,6 +22,7 @@ export type Response<T> = {
 
 export default class OpenPasswdClient {
   basePath: string;
+
   constructor(
     private token?: string,
     private setToken?: SetterOrUpdater<string | undefined>
@@ -29,7 +30,7 @@ export default class OpenPasswdClient {
     this.basePath = config.openpasswd_server;
   }
 
-  async post<B, R>(path: string, body: B): Promise<Response<R>> {
+  async request<B, R>(requestType: 'POST' | 'PUT', path: string, body: B): Promise<Response<R>> {
     const url = `${this.basePath}${path}`;
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
@@ -38,12 +39,20 @@ export default class OpenPasswdClient {
       headers.Authorization = `Bearer ${this.token}`;
     }
     const options = {
-      method: 'POST',
+      method: requestType,
       headers,
       body: JSON.stringify(body),
     };
 
     return this.send(url, options);
+  }
+
+  async post<B, R>(path: string, body: B): Promise<Response<R>> {
+    return this.request('POST', path, body)
+  }
+
+  async put<B, R>(path: string, body: B): Promise<Response<R>> {
+    return this.request('PUT', path, body)
   }
 
   get<R>(path: string): Promise<Response<R>> {
@@ -154,8 +163,12 @@ export default class OpenPasswdClient {
   }
 
   async recoveryPasswordRequest(recovery: RecoveryRequest) {
-    const response = await this.post('/api/auth/password_recovery', recovery)
-    console.log(response.status)
+    await this.post('/api/auth/password_recovery', recovery)
+  }
+
+  async changePassword(changedPassword: ChangedPassword) {
+    const response = await this.put('/api/auth/password_recovery', changedPassword)
+    console.log(response.status);
   }
 
   async createAccount(newAccount: NewAccount): Promise<AccountView> {

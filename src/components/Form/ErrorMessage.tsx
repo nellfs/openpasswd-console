@@ -8,7 +8,7 @@ export interface ErrorProps {
 
 const ErrorMessage = (props: ErrorProps) => (
   <div
-    className="absolute top-8 flex mb-2 justify-center gap-6 shadow-lg font-body bg-red-500 text-white font-bold px-0 w-64 py-1 rounded-lg"
+    className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 top-8 flex mb-2 gap-6 shadow-lg font-body bg-red-500 text-white font-bold px-0 w-64 py-1 rounded-lg"
     role="alert"
   >
     <div className='flex'>

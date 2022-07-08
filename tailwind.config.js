@@ -10,7 +10,10 @@ module.exports = {
         others: ['Poppins']
       },
       colors: {
-        'secure-blue': '#2c6ff3',
+        'secure-cyan': '#2c6ff3',
+        'secure-blue': '#006bff',
+        'secure-light-blue': '#0063ec',
+        'secure-dark-blue': '#0059d4'
       }
     },
   },

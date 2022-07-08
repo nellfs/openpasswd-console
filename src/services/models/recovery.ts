@@ -2,7 +2,7 @@ export interface RecoveryRequest {
     email: string;
 }
 
-export interface ChangePassword {
-    access_token: string;
+export interface ChangedPassword {
+    token: string;
     password: string;
 }

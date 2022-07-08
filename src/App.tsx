@@ -16,6 +16,7 @@ class App extends React.Component {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot_password" element={<ForgotPassword />} />
         <Route path="/recovery_password" element={<RecoveryPassword />} />
+
         <Route
           path="/group/:name"
           element={

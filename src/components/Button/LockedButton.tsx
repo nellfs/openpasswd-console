@@ -11,13 +11,15 @@ function LockedButton(props: PropsWithChildren<LockedButton>) {
         <button
             className='
           inline-block
-          px-7 py-3
+          shadow
+          px-7 py-1.5
           disabled:bg-slate-400
           font-others
+          font-medium
           text-slate-200
           bg-white
-          text-1xl leading uppercase 
-          rounded-2xl
+          text-1xl leading  
+          rounded-lg
           cursor-not-allowed
           w-full'
 

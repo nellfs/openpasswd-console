@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { CubeIcon } from '@heroicons/react/outline'
@@ -14,7 +14,6 @@ import { ResponseError } from '../../services/models';
 interface IState {
   email: string;
   password: string;
-  remember: boolean;
 }
 
 interface LocationProps {
@@ -23,21 +22,23 @@ interface LocationProps {
   };
 }
 
+const emailReducer = (state: IState, action) => {
+  return { value: '', isValid: false };
+};
+
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
-
   const from = location.state?.from?.pathname || '/';
+  const [state, setState] = useState<IState>({ email: '', password: '', });
 
-  const [state, setState] = useState<IState>({
-    email: '',
-    password: '',
-    remember: false,
-  });
 
   const [emailIsValid, setEmailIsValid] = useState(true);
   const [passwordIsValid, setPasswordIsValid] = useState(true);
   const [formIsValid, setFormIsValid] = useState(false)
+
+
+  const [emailState, dispatchEmail] = useReducer(emailReducer, { value: '', isValid: false });
 
   const emailChangeHandler = (value: string) => {
     setState({ ...state, email: value })
@@ -58,12 +59,11 @@ const Login = () => {
   }
 
 
-  useEffect(() => {
-    setFormIsValid(
-      state.email.includes('@') && state.password.trim().length > 3
-    )
-    console.log(state.email + ".")
-  }, [state.email, state.password]);
+  // useEffect(() => {
+  //   setFormIsValid(
+  //     state.email.includes('@') && state.password.trim().length > 3
+  //   )
+  // }, [state.email, state.password]);
 
 
   const [isLoading, setIsLoading] = useState(false);
@@ -89,67 +89,66 @@ const Login = () => {
   };
 
   return (
-    <main className='flex min-h-screen bg-gradient-to-tl from-secure-blue to-cyan-500'>
-      <FormErrorView responseError={errors} />
-      <div className='flex flex-row justify-center m-auto items-center shadow-2xl rounded-2xl'>
-        <div className='sm:w-96 sm:max-w-96 sm:max-h-[27rem] p-8 bg-white rounded-tl-2xl rounded-bl-2xl rounded-br-2xl rounded-tr-2xl sm:rounded-tr-none sm:rounded-br-none'>
-          <div className='hidden sm:inline-flex text-slate-800 h-8 font-body font-semibold'>
-            <CubeIcon />
-            <h1 className='text-3xl'>OpenPasswd</h1>
-          </div>
-          <div className='font-body text-slate-600'>
-            <p className='flex flex-row justify-center text-4xl font-boldn mt-8'>
+    <main className='flex min-h-screen bg-secure-light-blue'>
+
+      <div className='absolute inline-flex text-white m-2'>
+        <CubeIcon className='h-7' />
+        <h1 className='text-xl m-auto font-others font-semibold'>OpenPasswd</h1>
+      </div>
+
+      <div className='grid grid-cols-1 sm:grid-cols-2 gap-0 m-auto shadow-2xl grid-flow-col h-[28rem]'>
+        <div className='font-body bg-white sm:rounded-tl-lg sm:rounded-bl-lg w-72 col-span-2 px-4'>
+          <div className='flex flex-col px-1'>
+            <h1 className='text-2xl mt-10 text-slate-700 font-bold'>
               Log in to continue.
-            </p>
-
-            <Form onSubmit={authTokenRequest}>
-              <div className='mt-8 flex flex-col' />
-              <Input
-                name="Email"
-                type="email"
-                canHide={false}
-                value={state.email}
-                isValid={emailIsValid}
-                onBlur={validateEmailHandler}
-                onChange={(value) => emailChangeHandler(value)} />
-              {/* print for test */}
-              <Input
-                name="Password"
-                type="password"
-                canHide={true}
-                value={state.password}
-                isValid={passwordIsValid}
-                onBlur={validatePasswordHandler}
-                onChange={(value) => passwordChangeHandler(value)}
-              />
-              <div className='flex flex-row gap-12 mt-5 mb-7 justify-center'>
-                <Checkbox
-                  name="Remember-me"
-                  value={state.remember}
-                  onChange={(value) => setState({ ...state, remember: value })} />
-
-                <Link className='text-1xl text-blue-600 font-body' to='/forgot_password' >Forgot password?</Link>
-
-              </div>
+            </h1>
+            <h1 className='justify-center text-slate-500'>
+              ready or not
+            </h1>
+            <div className='mt-8 w-full h-px bg-slate-200'></div>
+          </div>
+          <Form onSubmit={authTokenRequest}>
+            <div className='mt-14 flex flex-col' />
+            <Input
+              name="Email"
+              type="email"
+              canHide={false}
+              value={state.email}
+              isValid={emailIsValid}
+              onBlur={validateEmailHandler}
+              onChange={(value) => emailChangeHandler(value)} />
+            {/* print for test */}
+            <Input
+              name="Password"
+              type="password"
+              canHide={true}
+              value={state.password}
+              isValid={passwordIsValid}
+              onBlur={validatePasswordHandler}
+              onChange={(value) => passwordChangeHandler(value)}
+            />
+            <div className='px-1 gap-1 mb-3'>
+              <Link className='text-1xl text-blue-600 font-body' to='/forgot_password' >Forgot password?</Link>
+            </div>
+            <div className='mt-10 p-3'>
               <Button theme="default" type="submit" disabled={!formIsValid || isLoading}>
                 Login
               </Button>
-            </Form>
-          </div>
+            </div>
+          </Form>
         </div>
-        <div className='sm:w-72 sm:max-w-96 h-[430px] hidden sm:flex flex-col px-4 items-center justify-center m-auto rounded-tr-2xl rounded-br-2xl bg-gradient-to-b from-cyan-500 to-secure-blue'>
-          <div className='font-others text-white text-center'>
-            <h1 className='font-bold text-4xl'>{"We won't forget your passwords"}</h1>
-            <p className='mt-8 text-lg'>{"Not have an account yet? Create now!"}</p>
-          </div>
-          <div className='flex flex-col items-center mt-6'>
-            <Link className="text-2xl text-white  transition-all hover:text-[1.65rem] font-bold font-body underline"
-              to="/register">Create account</Link>
-          </div>
+
+        <div className='hidden sm:flex bg-blue-200 rounded-tr-lg rounded-br-lg w-[23rem]'>
+          .
         </div>
       </div>
+
+
+
     </main>
+
   );
+
 };
 
 export default Login;
