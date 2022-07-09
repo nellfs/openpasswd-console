@@ -57,18 +57,15 @@ function accountReducer(accountState: AccountState, accountAction: AccountAction
 
     case AccountActionTypes.EMAIL_USER_INPUT:
       return {
-        emailValue: emailVal,
-        emailIsValid: accountState.emailIsValid,
-        passwordValue: '',
-        passwordIsValid: true
+        ...accountState,
+        emailValue: emailVal
+
       }
     case AccountActionTypes.EMAIL_USER_BLUR:
       console.log('hello')
       return {
-        emailValue: accountAction.emailVal,
+        ...accountState,
         emailIsValid: emailVal.includes('@'),
-        passwordValue: '',
-        passwordIsValid: true,
       }
 
     default:
