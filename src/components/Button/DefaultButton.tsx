@@ -13,7 +13,7 @@ function DefaultButton(props: PropsWithChildren<ButtonProps>) {
           px-7 py-1.5
           font-others
           font-medium
-        bg-sky-600
+        bg-secure-blue
         text-white
           text-1xl leading
           rounded-lg
@@ -21,7 +21,8 @@ function DefaultButton(props: PropsWithChildren<ButtonProps>) {
         focus:bg-blue-600  focus:outline-none focus:ring-0
         active:bg-blue-800 
           transition duration-100 ease-in-out
-          w-full'
+          w-full
+          h-full'
 
       type={props.type}
       onClick={props.onClick}

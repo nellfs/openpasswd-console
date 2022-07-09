@@ -1,6 +1,6 @@
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useEffect, useReducer, Reducer } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { CubeIcon } from '@heroicons/react/outline'
 
 
@@ -16,54 +16,142 @@ interface IState {
   password: string;
 }
 
+interface AccountState {
+  emailValue: string;
+  emailIsValid: boolean;
+  passwordValue: string;
+  passwordIsValid: boolean;
+}
+
+const initialAccountState: AccountState = {
+  emailValue: '',
+  emailIsValid: true,
+  passwordValue: '',
+  passwordIsValid: true,
+}
+
+enum AccountActionTypes {
+  EMAIL_USER_INPUT = 'EMAIL_USER_INPUT',
+  EMAIL_USER_BLUR = 'EMAIL_USER_BLUR',
+  PASSWORD_USER_INPUT = 'PASSWORD_USER_INPUT',
+  PASSWORD_USER_BLUR = 'PASSWORD_USER_BLUR'
+}
+
+type AccountAction = {
+  type: AccountActionTypes;
+  emailVal: string;
+  passwordVal: string;
+}
+
 interface LocationProps {
   state: {
     from: Location;
   };
 }
 
-const emailReducer = (state: IState, action) => {
-  return { value: '', isValid: false };
-};
 
-const Login = () => {
+function accountReducer(accountState: AccountState, accountAction: AccountAction) {
+  const { type, emailVal, passwordVal } = accountAction;
+  console.log(emailVal)
+  switch (type) {
+
+    case AccountActionTypes.EMAIL_USER_INPUT:
+      return {
+        emailValue: emailVal,
+        emailIsValid: accountState.emailIsValid,
+        passwordValue: '',
+        passwordIsValid: true
+      }
+    case AccountActionTypes.EMAIL_USER_BLUR:
+      console.log('hello')
+      return {
+        emailValue: accountAction.emailVal,
+        emailIsValid: emailVal.includes('@'),
+        passwordValue: '',
+        passwordIsValid: true,
+      }
+
+    default:
+      console.log('retornou')
+      return accountState;
+
+  }
+  // if (type == 'USER_INPUT')
+  //   return { value: action.val, isValid: state.isValid }
+  // if (action.type === 'USER_BLUR') {
+  //   console.log('validating in user_blur')
+  //   return { value: state.value, isValid: action.val.includes('@') }
+  // }
+  // console.log('out')
+  // console.log(state.value)
+  // return { value: action.val, isValid: action.val.includes('@') };
+}
+
+
+export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation() as LocationProps;
   const from = location.state?.from?.pathname || '/';
-  const [state, setState] = useState<IState>({ email: '', password: '', });
 
 
-  const [emailIsValid, setEmailIsValid] = useState(true);
-  const [passwordIsValid, setPasswordIsValid] = useState(true);
+  // const [state, setState] = useState<IState>({ email: '', password: '', });
+  // const [emailIsValid, setEmailIsValid] = useState(true);
+  // const [passwordIsValid, setPasswordIsValid] = useState(true);
   const [formIsValid, setFormIsValid] = useState(false)
 
-
-  const [emailState, dispatchEmail] = useReducer(emailReducer, { value: '', isValid: false });
+  const [accountState, dispatchAccountState] = useReducer(accountReducer, initialAccountState);
 
   const emailChangeHandler = (value: string) => {
-    setState({ ...state, email: value })
+    dispatchAccountState({
+      type: AccountActionTypes.EMAIL_USER_INPUT,
+      emailVal: value,
+      passwordVal: ''
+    })
   };
 
   const passwordChangeHandler = (value: string) => {
-    setState({ ...state, password: value });
+    dispatchAccountState({
+      type: AccountActionTypes.PASSWORD_USER_INPUT,
+      emailVal: '',
+      passwordVal: value
+    })
   };
 
   const validateEmailHandler = () => {
-    if (state.email.includes('@')) setEmailIsValid(true);
-    else setEmailIsValid(false);
+    dispatchAccountState({
+      type: AccountActionTypes.EMAIL_USER_BLUR,
+      emailVal: accountState.emailValue,
+      passwordVal: ''
+    })
   }
 
   const validatePasswordHandler = () => {
-    if (state.password.trim().length > 3) setPasswordIsValid(true);
-    else setPasswordIsValid(false);
+    dispatchAccountState({
+      type: AccountActionTypes.PASSWORD_USER_BLUR,
+      emailVal: '',
+      passwordVal: accountState.passwordValue
+    })
   }
 
+  // const validateEmailHandler = () => {
+  //   if (state.email.includes('@')) setEmailIsValid(true);
+  //   else setEmailIsValid(false);
+  // }
 
-  // useEffect(() => {
-  //   setFormIsValid(
-  //     state.email.includes('@') && state.password.trim().length > 3
-  //   )
-  // }, [state.email, state.password]);
+  // const validatePasswordHandler = () => {
+  //   if (state.password.trim().length > 3) setPasswordIsValid(true);
+  //   else setPasswordIsValid(false);
+  // }
+
+  const { emailIsValid: emailValid, passwordIsValid: passwordValid } = accountState;
+
+  useEffect(() => {
+    setFormIsValid(
+      accountState.emailValue.includes('@') && accountState.passwordValue.trim().length > 7
+    )
+  }, [emailValid, passwordValid])
+
+
 
 
   const [isLoading, setIsLoading] = useState(false);
@@ -71,21 +159,21 @@ const Login = () => {
   const setToken = useRecoilState(auth_token)[1];
 
   const authTokenRequest = async () => {
-    setIsLoading(true);
-    const openPasswdClient = new OpenPasswdClient(undefined, setToken);
-    try {
-      const login = await openPasswdClient.authToken(state);
-      setToken(login.access_token);
-      navigate(from, { replace: true });
-    } catch (e) {
-      if (e instanceof ResponseError) {
-        setErrors(e);
-      } else {
-        console.log(`Exception: ${e}`);
-      }
-    } finally {
-      setIsLoading(false);
-    }
+    // setIsLoading(true);
+    // const openPasswdClient = new OpenPasswdClient(undefined, setToken);
+    // try {
+    //   const login = await openPasswdClient.authToken(state);
+    //   setToken(login.access_token);
+    //   navigate(from, { replace: true });
+    // } catch (e) {
+    //   if (e instanceof ResponseError) {
+    //     setErrors(e);
+    //   } else {
+    //     console.log(`Exception: ${e}`);
+    //   }
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   return (
@@ -103,7 +191,7 @@ const Login = () => {
               Log in to continue.
             </h1>
             <h1 className='justify-center text-slate-500'>
-              ready or not
+              Ready or not
             </h1>
             <div className='mt-8 w-full h-px bg-slate-200'></div>
           </div>
@@ -113,8 +201,8 @@ const Login = () => {
               name="Email"
               type="email"
               canHide={false}
-              value={state.email}
-              isValid={emailIsValid}
+              value={accountState.emailValue}
+              isValid={accountState.emailIsValid}
               onBlur={validateEmailHandler}
               onChange={(value) => emailChangeHandler(value)} />
             {/* print for test */}
@@ -122,8 +210,8 @@ const Login = () => {
               name="Password"
               type="password"
               canHide={true}
-              value={state.password}
-              isValid={passwordIsValid}
+              value={accountState.passwordValue}
+              isValid={accountState.passwordIsValid}
               onBlur={validatePasswordHandler}
               onChange={(value) => passwordChangeHandler(value)}
             />
@@ -138,7 +226,7 @@ const Login = () => {
           </Form>
         </div>
 
-        <div className='hidden sm:flex bg-blue-200 rounded-tr-lg rounded-br-lg w-[23rem]'>
+        <div className='hidden sm:flex bg-slate-300 rounded-tr-lg rounded-br-lg w-[23rem]'>
           .
         </div>
       </div>

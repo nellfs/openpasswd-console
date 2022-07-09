@@ -11,7 +11,6 @@ function LockedButton(props: PropsWithChildren<LockedButton>) {
         <button
             className='
           inline-block
-          shadow
           px-7 py-1.5
           disabled:bg-slate-400
           font-others
@@ -21,7 +20,8 @@ function LockedButton(props: PropsWithChildren<LockedButton>) {
           text-1xl leading  
           rounded-lg
           cursor-not-allowed
-          w-full'
+          w-full
+          h-full'
 
             type={props.type}
             onClick={props.onClick}
